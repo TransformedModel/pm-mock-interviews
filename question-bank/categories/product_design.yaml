@@ -1,0 +1,924 @@
+version: 1
+category: Product Design
+questions:
+  - id: PD-001
+    difficulty: medium
+    prompt: Design a product to help first-time managers run better 1:1s.
+    what_good_looks_like:
+      - Clarifies target user (first-time managers) and context (team size, remote/hybrid, cadence).
+      - Identifies core job-to-be-done and pain points (agenda, notes, follow-through, trust).
+      - Prioritizes a narrow MVP and explains trade-offs.
+      - Defines success metrics and leading indicators.
+    answer:
+      structure:
+        - Clarify users, use-cases, constraints, and definition of “better 1:1s”.
+        - List pain points and choose top 1–2 to solve first.
+        - Propose MVP: workflow, key screens, and data model.
+        - Risks and mitigations (privacy, adoption, manager habits).
+        - Metrics + experiment plan.
+      sample: >
+        I’ll design for first-time people managers in teams of 4–8, who already use Google
+        Calendar/Slack. “Better 1:1s” means: consistent cadence, clear agenda, psychological safety,
+        and reliable follow-through.
+
+        The biggest pains are (1) starting with a blank page, (2) losing context across weeks, and
+        (3) action items that die in chat.
+
+        MVP: a “1:1 Companion” that plugs into the calendar event. Before the meeting it suggests a
+        lightweight agenda template (wins, blockers, growth, feedback) and pulls context (last
+        meeting notes, open action items). During/after, it supports quick note capture and converts
+        selected lines into action items with owner + due date, then sends a summary to both parties
+        for alignment. To reduce friction, it lives where managers already are: a calendar sidebar
+        and a Slack reminder with 2 buttons: “Add agenda item” and “Mark action done”.
+
+        Trade-offs: I’d avoid recording/transcription in v1 (privacy + trust + complexity). I’d also
+        avoid performance management features early because they change the tone of 1:1s.
+
+        Success: weekly active managers using it for 1:1s, % meetings with an agenda created
+        beforehand, action-item completion rate within 7 days, and a lightweight post-1:1 pulse
+        (“Was this 1:1 useful?”). I’d pilot with 3–5 teams, compare agenda coverage and
+        follow-through vs baseline, and iterate on reminders and templates.
+    follow_ups:
+      - How would you handle sensitive notes and privacy?
+      - What would you build for the report (the direct report) vs the manager?
+      - What’s your North Star metric and why?
+      - How do you drive adoption if managers don’t change habits?
+  - id: PD-002
+    difficulty: medium
+    prompt: Improve the onboarding experience for a mobile banking app.
+    what_good_looks_like:
+      - Distinguishes activation vs KYC completion vs first value moment.
+      - Identifies drop-offs and reasons (trust, friction, unclear value).
+      - Proposes a staged onboarding that balances compliance with time-to-value.
+      - Specifies metrics and experiment design.
+    answer:
+      structure:
+        - Define goal and “first value” for the bank (e.g., first deposit/first card payment).
+        - Map funnel and diagnose likely drop-offs.
+        - Propose changes by stage (pre-KYC, KYC, post-KYC activation).
+        - Define metrics and guardrails (fraud, compliance).
+      sample: >
+        First I’d define the first value moment: for many mobile banks it’s either “card is ready to
+        use” or “money is in the account and I can pay/transfer”. I’d instrument the funnel: install
+        → open → value proposition understood → account created → KYC started → KYC approved → first
+        funding → first transaction.
+
+        Common drop-offs are at KYC (time, document friction, fear) and between approval and first
+        funding (no clear next step). I’d redesign onboarding into three parts: (1) Pre-KYC value
+        framing: a 2–3 screen pitch tailored by persona (travel, budgeting, rewards) plus “what you
+        need” checklist to reduce surprise. (2) KYC flow: progressive disclosure, clear time
+        estimates, save-and-resume, better capture UX, and status tracking. (3) Post-KYC activation:
+        a guided next-step checklist that pushes to funding and first transaction (Add money, set up
+        salary, add to Apple Pay, make first payment), with contextual education.
+
+        Metrics: KYC start rate, KYC completion, time to approval, funding rate within 7 days, first
+        transaction within 14 days, plus guardrails like fraud rate and customer support contacts
+        per 1k signups. I’d A/B test messaging and flow steps, and segment by acquisition channel
+        and device.
+    follow_ups:
+      - What if compliance requires KYC before showing anything useful?
+      - How would you handle users who fail KYC?
+      - What are your guardrail metrics?
+      - How do you tailor onboarding by persona without asking many questions?
+  - id: PD-003
+    difficulty: medium
+    prompt: Design a feature that helps users build a healthier relationship with social media.
+    what_good_looks_like:
+      - Avoids moralizing; frames user goals and consent.
+      - Identifies behaviors to change (doomscrolling, notifications, late-night use).
+      - Proposes interventions that are effective yet respectful (nudges, limits, defaults).
+      - Considers unintended consequences and measurement.
+    answer:
+      structure:
+        - Clarify target user and definition of “healthier”.
+        - Choose 1–2 behaviors to address.
+        - Propose interventions: awareness, friction, replacement behaviors.
+        - Metrics, risks, and guardrails.
+      sample: >
+        “Healthier” is user-defined, so I’d start with two common goals: reduce unintentional time
+        spent and improve how they feel after sessions. I’d focus on (1) late-night usage and (2)
+        infinite feed doomscrolling.
+
+        Feature: “Intentional Sessions”. When the user opens the app during high-risk windows (e.g.,
+        11pm–2am) or after a long session, we show a lightweight prompt: “What are you here for?”
+        with 3 quick intents (Check messages, Post, Browse 5 min). If they pick “Browse 5 min”, we
+        start a timer and switch the feed to a “finite” mode: limited batch of posts and a clear end
+        state. We also offer a replacement action at the end: “Save for later” or “Take a break”.
+
+        Trade-off: too much friction risks retention, so I’d make it opt-in with a short setup that
+        learns patterns and adapts, plus easy snooze. Metrics: opt-in rate, session length
+        distribution, late-night sessions, self-reported wellbeing pulse, and guardrails like day-7
+        retention and content consumption. I’d test nudges by cohort and monitor for gaming or
+        negative user sentiment.
+    follow_ups:
+      - How do you prevent this from hurting the business?
+      - What if creators complain about reduced reach?
+      - How do you measure “healthier” without surveys?
+      - Would you make any changes to default notifications?
+  - id: PD-004
+    difficulty: hard
+    prompt: Design a marketplace that helps small businesses find reliable contractors within 48 hours.
+    what_good_looks_like:
+      - Defines two-sided marketplace supply/demand and solves cold start.
+      - Addresses trust, vetting, pricing, and dispute resolution.
+      - Chooses a narrow vertical/geography to start and explains why.
+      - Defines liquidity metrics and operational levers.
+    answer:
+      structure:
+        - Pick starting vertical + geo and justify.
+        - Map critical marketplace loops (posting, matching, fulfillment, repeat).
+        - Trust and quality mechanisms.
+        - Liquidity metrics and operations plan.
+      sample: >
+        I’d start narrow: one city and one vertical where urgency is real and scope is well-defined,
+        like “commercial electricians for small retail/food businesses”. The 48-hour promise forces
+        us to operationalize supply availability.
+
+        Demand flow: business posts job with structured fields (issue type, photos, location, time
+        windows). Supply flow: contractors complete onboarding with license/insurance verification,
+        service area, rates, and schedule.
+
+        Matching MVP: instead of open bidding, I’d use “broadcast + accept”: we send the job to a
+        small set of available, qualified contractors; first to accept with required ETA wins.
+        Pricing: start with transparent hourly ranges plus minimum callout, then move toward
+        fixed-price for common jobs once we have data.
+
+        Trust: verified credentials, background checks for certain roles, escrow payments, milestone
+        completion, ratings weighted by recency and job type, and a dispute workflow. Quality:
+        no-show penalties, SLA tracking, and customer support that can reassign quickly.
+
+        Success: time-to-first-accept, fulfillment rate within 48 hours, repeat rate, contractor
+        utilization, and net promoter score. Cold start: seed supply via partnerships with local
+        contractor associations and guarantee minimum earnings for the first cohort, while targeting
+        demand via business groups and emergency-repair keywords.
+    follow_ups:
+      - How do you prevent race-to-the-bottom pricing?
+      - What’s your plan for fraud and fake reviews?
+      - How do you scale to new cities/verticals?
+      - How do you handle liability if work is poor?
+  - id: PD-005
+    difficulty: easy
+    prompt: Design a better alarm clock for heavy sleepers.
+    what_good_looks_like:
+      - Clarifies constraints (sharing room, hearing issues, work schedule).
+      - Proposes multiple wake modalities (sound, light, vibration) and escalation.
+      - Balances effectiveness with user experience.
+      - Defines success metrics (wake success, snooze count).
+    answer:
+      structure:
+        - Clarify user segment and environment.
+        - Identify root causes (sleep debt, noise tolerance, habits).
+        - Propose feature set and trade-offs.
+        - Metrics and iterations.
+      sample: >
+        I’d clarify: are they heavy sleepers due to sleep debt, medical issues, or just deep sleep
+        phases? Also whether they share a room. I’d design for “needs reliable wake-up without
+        disturbing others”.
+
+        Solution: a “smart escalation” alarm that starts with a gentle light ramp and vibration,
+        then increases intensity only if the user doesn’t acknowledge. To avoid snooze abuse, snooze
+        becomes “micro-snooze” (e.g., 2 minutes) and requires a small action like scanning a QR code
+        in the bathroom. For shared rooms, sound stays low-frequency and directional via phone
+        placement; optional wearable integration increases vibration instead of volume.
+
+        Metrics: wake success rate (acknowledge within X minutes), missed alarm rate, average snooze
+        count, and user-reported morning stress. I’d iterate by personalizing escalation based on
+        past responsiveness.
+    follow_ups:
+      - What if users uninstall because it’s too annoying?
+      - How do you detect they’re actually awake?
+      - Would you sell hardware or keep it software-only?
+  - id: PD-006
+    difficulty: hard
+    prompt: >-
+      Design an AI assistant feature inside a document editor (like Google Docs) that meaningfully
+      improves productivity.
+    what_good_looks_like:
+      - Picks concrete workflows (rewrite, summarize, outline, cite, meeting notes) and prioritizes.
+      - Addresses trust, control, and evaluation (grounding, versioning, citations).
+      - Considers cost/latency and UI affordances.
+      - Defines success metrics tied to time saved and quality.
+    answer:
+      structure:
+        - Clarify target user and top jobs-to-be-done in the editor.
+        - Choose an MVP workflow with high frequency and measurable impact.
+        - Design UI: inline, sidebar, or command palette; controls and preview.
+        - Trust/quality: sources, undo, tone, style guide.
+        - Metrics and rollout.
+      sample: >
+        I’d target knowledge workers who draft internal docs and PRDs. The highest-frequency,
+        measurable workflow is “turn messy notes into a structured draft”.
+
+        MVP: “Draft from context”. User highlights bullets or pastes meeting notes, hits a command
+        palette action, and gets a generated outline + first draft in a side-by-side preview.
+        Controls include audience, tone, length, and a company style guide. The user accepts changes
+        via tracked changes so it feels safe and reversible.
+
+        Trust: the assistant must show what it used—selected text, linked docs, and any citations.
+        It should avoid making up facts by defaulting to “only use provided context”, with an
+        explicit toggle to browse the web if allowed. Latency: stream the outline first, then expand
+        sections on demand to manage perceived speed and cost.
+
+        Success metrics: time-to-first-draft, edit distance (how much rewriting is needed),
+        completion rate, and user-rated helpfulness. Guardrails: hallucination reports,
+        sensitive-data leakage flags, and opt-out controls.
+    follow_ups:
+      - How do you evaluate quality offline before shipping?
+      - What are your privacy and data retention policies?
+      - How do you prevent prompt injection via shared documents?
+  - id: PD-007
+    difficulty: medium
+    prompt: Design “Saved Replies” for customer support agents.
+    what_good_looks_like:
+      - Optimizes for speed without losing personalization.
+      - Supports governance (approved templates) and analytics.
+      - Considers multi-language and tone.
+      - Defines agent and customer success metrics.
+    answer:
+      structure:
+        - Clarify workflow (channels, ticket volume, SLAs).
+        - Identify most common intents and where time is spent.
+        - Propose template creation, insertion, and personalization UX.
+        - Governance + measurement.
+      sample: >
+        I’d start by understanding the support workflow: email vs chat, average handle time, and
+        what “quality” means. The core opportunity is reducing repetitive typing while keeping
+        replies accurate and on-brand.
+
+        Feature: a curated library of approved templates by intent, searchable via shortcuts and
+        tags. When inserted, the template contains variables like {{customer_name}}, {{order_id}},
+        and conditional blocks. Agents get a “personalize” checklist (confirm context, add empathy
+        line, verify policy). For governance, only leads can publish templates, with versioning and
+        audit logs. Analytics show usage, edits, and downstream outcomes (reopen rate).
+
+        Success: reduction in handle time, first response time, and improved CSAT/reopen rate;
+        guardrail: policy violations.
+    follow_ups:
+      - How do you avoid agents over-relying on templates?
+      - How do you measure response quality?
+      - What’s your rollout plan across teams?
+  - id: PD-008
+    difficulty: medium
+    prompt: Design a feature to help people split household expenses fairly.
+    what_good_looks_like:
+      - Clarifies scenarios (roommates vs couples, multi-currency, uneven income).
+      - Handles edge cases (shared subscriptions, reimbursements, settling up).
+      - Proposes clear mental model and simple UX.
+      - Defines metrics and potential abuse cases.
+    answer:
+      structure:
+        - Clarify who and what “fair” means.
+        - Identify top 3 workflows: add expense, assign shares, settle up.
+        - Propose MVP and edge case handling.
+        - Metrics and iteration plan.
+      sample: >
+        “Fair” depends on the group: equal split for roommates, income-weighted for couples, or
+        category-based rules. I’d support two modes: equal by default, and “custom rules” opt-in.
+
+        MVP: create a household group, add expenses with payer + category, assign participants, and
+        default equal split. The app maintains a running balance per person and suggests the minimum
+        set of transfers to settle up monthly. For shared subscriptions, allow recurring expenses.
+        For reimbursements, allow marking an expense as “paid back”.
+
+        To keep it simple, show one primary screen: “You are owed / You owe” plus a history ledger.
+        Metrics: weekly active households, expenses logged per week, settle-up completion rate, and
+        churn after first month.
+    follow_ups:
+      - How would you handle someone disputing an expense?
+      - How do you support different currencies?
+      - Would you integrate payments?
+  - id: PD-009
+    difficulty: hard
+    prompt: Redesign the home screen for a music streaming app to increase long-term retention.
+    what_good_looks_like:
+      - >-
+        Connects home screen changes to retention drivers (habit, personalization quality,
+        discovery).
+      - Segments users (new vs power users, listeners by genre/time of day).
+      - Proposes experiments and guardrails (content diversity, creator fairness).
+      - Defines metrics and qualitative validation.
+    answer:
+      structure:
+        - Clarify retention definition and segments.
+        - Hypothesize what drives retention.
+        - Propose home modules and personalization approach.
+        - Measurement and rollout.
+      sample: >
+        I’d define retention as week-4 and week-12 retention, segmented by new users vs established
+        listeners. Home’s job is to reduce “time to play something good” and build habits across
+        contexts (commute, focus, workout).
+
+        I’d propose a modular home with: (1) “Continue listening” for instant play, (2)
+        context-based mixes by time of day, (3) lightweight discovery with clear explanation
+        (“Because you liked…”), and (4) a “new from artists you follow” shelf to deepen creator
+        connection. For new users, emphasize onboarding signals and curated starter packs; for power
+        users, emphasize shortcuts and freshness.
+
+        Metrics: time-to-first-play, skips, session length, saves, follows, and cohort retention.
+        Guardrails: over-personal filter bubble (diversity score), and creator distribution
+        fairness. I’d run module-level experiments and validate with user interviews on perceived
+        relevance and control.
+    follow_ups:
+      - How do you balance exploration vs exploitation?
+      - What do you do if metrics improve but users complain?
+      - How do you handle cold start for new users?
+  - id: PD-010
+    difficulty: medium
+    prompt: Design a way for riders to feel safer in a ride-sharing app.
+    what_good_looks_like:
+      - Identifies safety moments (before pickup, during ride, after ride).
+      - Proposes layered solutions (prevention, detection, response).
+      - Considers false positives, privacy, and operational costs.
+      - Defines safety metrics and guardrails.
+    answer:
+      structure:
+        - Clarify rider segments and top fears.
+        - Map journey and identify high-risk moments.
+        - Propose interventions by phase.
+        - Metrics and operations.
+      sample: >
+        I’d map safety into three phases: before pickup (identity and location certainty), during
+        ride (route integrity and help access), after ride (reporting and support).
+
+        MVP set: stronger driver verification signals (recent selfie check badge), pickup
+        verification (PIN code), and “share trip status” defaults for late-night rides. During the
+        ride, add proactive anomaly detection: if the car deviates significantly or stops
+        unexpectedly, prompt the rider with “Are you OK?” and one-tap to call emergency or support.
+        After the ride, make reporting simpler with categories and an SLA for follow-up.
+
+        Metrics: incident rate per 100k trips, time-to-support-response, adoption of PIN/share,
+        false-positive rate for anomaly detection, and rider trust survey. I’d start with late-night
+        cohorts where value is highest.
+    follow_ups:
+      - How do you handle regions with different emergency systems?
+      - What’s your approach to false alarms?
+      - How do you avoid driver discrimination?
+  - id: PD-011
+    difficulty: easy
+    prompt: Design a feature that helps users remember names after meeting people.
+    what_good_looks_like:
+      - Clarifies privacy constraints and where the feature lives.
+      - Uses lightweight capture and retrieval cues.
+      - Minimizes awkwardness and compliance issues.
+      - Defines usage and value metrics.
+    answer:
+      structure:
+        - Clarify context (networking, workplace, events) and privacy expectations.
+        - Propose capture flow and retrieval moments.
+        - Constraints and metrics.
+      sample: >
+        I’d design this as an opt-in feature in a contacts app: after a meeting, you can quickly add
+        a name plus 1–2 cues (“met at Fintech meetup”, “works on growth at X”). Retrieval happens
+        when you enter the venue again (calendar event) or when someone calls/messages—showing the
+        cues discreetly.
+
+        I’d avoid face recognition in v1 due to privacy risk. Success: number of contacts with cues
+        created, retrieval usage, and user-rated helpfulness.
+    follow_ups:
+      - Would you ever use camera/face recognition?
+      - How would you integrate with calendar?
+  - id: PD-012
+    difficulty: hard
+    prompt: Design a product to reduce food waste for a grocery chain.
+    what_good_looks_like:
+      - Identifies stakeholders (store ops, customers, suppliers) and incentives.
+      - Proposes end-to-end system (forecasting, dynamic pricing, donation).
+      - Considers operational feasibility and measurement.
+      - Defines success in business and environmental terms.
+    answer:
+      structure:
+        - Clarify scope (one chain, store format, categories like bakery/produce).
+        - Identify biggest waste drivers.
+        - Propose solution components and MVP.
+        - Metrics and rollout.
+      sample: >
+        I’d start with high-waste categories like bakery and prepared foods where shelf life is
+        short. Waste drivers are inaccurate demand forecasting, rigid pricing, and poor visibility
+        into near-expiry inventory.
+
+        MVP: an internal dashboard that flags items likely to expire in 24–48 hours, paired with
+        dynamic markdown rules and a “waste reduction” customer section in the app that surfaces
+        discounted near-expiry items for pickup. For excess, integrate donation partners with
+        scheduled pickups and compliance tracking.
+
+        Metrics: shrink rate, margin impact, sell-through of marked-down items, operational time per
+        markdown, and donation volume. I’d pilot in 10 stores, tune markdown thresholds, then
+        expand.
+    follow_ups:
+      - How do you prevent cannibalizing full-price sales?
+      - What operational changes are required in stores?
+  - id: PD-013
+    difficulty: medium
+    prompt: Design “offline mode” for a maps app used by travelers.
+    what_good_looks_like:
+      - Clarifies offline constraints (storage, freshness, routing).
+      - Prioritizes core offline jobs (navigation, search, saved places).
+      - Handles update strategy and failure modes gracefully.
+      - Defines metrics and guardrails.
+    answer:
+      structure:
+        - Clarify travel scenarios and connectivity constraints.
+        - Prioritize offline tasks.
+        - Propose download UX, update policy, and graceful degradation.
+      sample: >
+        Offline travelers mainly need navigation and saved places. MVP: download a city/region pack
+        with roads, POI basics, and transit lines if possible. UX: prompt download when the user
+        books travel (from calendar/email integrations) or when they search a destination
+        repeatedly, with clear size and “update over Wi‑Fi only”.
+
+        Offline, allow routing, turn-by-turn, and search within the downloaded region; outside it,
+        show a clear boundary and ask to expand the pack. Metrics: offline pack download rate,
+        successful offline navigation sessions, and support contacts due to offline failures.
+    follow_ups:
+      - How do you keep data fresh without large downloads?
+      - What’s the minimum data needed for routing?
+  - id: PD-014
+    difficulty: medium
+    prompt: Design a feature that helps users set and stick to a weekly exercise habit.
+    what_good_looks_like:
+      - Uses behavior design (identity, cues, rewards) without guilt.
+      - Personalizes goals and adapts to setbacks.
+      - Includes clear progress feedback loops.
+      - Defines retention-oriented success metrics.
+    answer:
+      structure:
+        - Clarify user baseline, motivation, and constraints.
+        - Choose habit loop interventions (plan, cue, action, reward).
+        - MVP and measurement.
+      sample: >
+        I’d personalize the goal to the user’s baseline—if they currently exercise 0 days, the MVP
+        goal is 1–2 short sessions. Feature: “Weekly plan” with 2 default time slots, calendar
+        reminders, and an “if-then” backup plan (if I miss Tue, I’ll do Thu). After each workout,
+        show streaks and a simple reflection (“Energy improved?”) to reinforce identity.
+
+        To handle setbacks, the system auto-adjusts the next week rather than resetting streaks to
+        zero. Metrics: weeks with goal met, 8-week retention, and reduction in missed planned
+        sessions.
+    follow_ups:
+      - How do you avoid notification fatigue?
+      - What if users can’t plan ahead?
+  - id: PD-015
+    difficulty: hard
+    prompt: Design a team feature for a note-taking app (like Notion/Evernote) to improve collaboration.
+    what_good_looks_like:
+      - Picks a specific collaboration pain (handoffs, knowledge base, meeting notes).
+      - Designs permissions, discoverability, and change tracking.
+      - Considers information architecture and governance.
+      - Defines adoption and quality metrics.
+    answer:
+      structure:
+        - Clarify team size and workflows.
+        - Identify top collaboration use case.
+        - Propose feature set: shared spaces, templates, permissions, search.
+        - Metrics and rollout.
+      sample: >
+        I’d design for 10–50 person teams using notes for meetings and decisions. The core pain is
+        knowledge getting lost in private docs. MVP: “Team Spaces” with default shared areas per
+        project, templates for meeting notes/decisions, and lightweight governance: owners can set
+        who can edit vs comment, and every page has change history and “decision” callouts that can
+        be collected into a decision log.
+
+        Discoverability comes from better search and an “auto-suggest” that surfaces related pages
+        when writing. Success: % of active users contributing to shared spaces, search-to-open
+        success rate, and reduced duplicate questions in chat.
+    follow_ups:
+      - How do you prevent chaos in shared spaces?
+      - What’s your permissions model?
+  - id: PD-016
+    difficulty: medium
+    prompt: Design a feature that helps users choose the right size when shopping for clothes online.
+    what_good_looks_like:
+      - Clarifies constraints (returns cost, brand variance, user privacy).
+      - Uses data signals (past purchases, returns, reviews, measurements).
+      - Proposes UX that builds trust (explanations, confidence).
+      - Defines success metrics and guardrails.
+    answer:
+      structure:
+        - Clarify category (shirts vs jeans) and platform context.
+        - Choose an approach (recommendation + explanation).
+        - MVP, risks, metrics.
+      sample: >
+        Sizes vary by brand, so I’d base recommendations on the user’s history and item-specific fit
+        feedback. MVP: when a user selects a product, show “Recommended: M (High confidence)” plus
+        why: “You kept size M in Brand X and returned L in similar fits” and “This item runs small
+        based on 1,200 reviews”.
+
+        Users can optionally input height/weight or measurements, but it’s not required. Success:
+        reduced return rate due to fit, increased conversion, and guardrails for user trust (low
+        complaint rate).
+    follow_ups:
+      - How do you handle users with no purchase history?
+      - What data do you need from merchants?
+  - id: PD-017
+    difficulty: easy
+    prompt: Design a “pause membership” flow for a subscription fitness app.
+    what_good_looks_like:
+      - Balances retention with user trust.
+      - Offers clear options (pause vs downgrade vs cancel).
+      - Captures learnings (reason codes) without being annoying.
+      - Defines success metrics (save rate, churn).
+    answer:
+      structure:
+        - Clarify why users cancel.
+        - Propose flow and messaging.
+        - Metrics and experimentation.
+      sample: >
+        I’d treat pause as a trust-building option for users who intend to come back. Flow: when
+        they hit cancel, ask a single reason (busy, injured, cost) and show the best alternative:
+        pause 1–3 months (busy/injured), downgrade to a cheaper plan (cost), or cancel. Make it
+        transparent: show what happens during pause and when billing resumes, with a reminder before
+        restart.
+
+        Metrics: save rate, 90-day retained after pause, and user sentiment.
+    follow_ups:
+      - How do you avoid dark patterns?
+      - What if users abuse pause repeatedly?
+  - id: PD-018
+    difficulty: hard
+    prompt: Design a B2B admin console for managing user access in an enterprise SaaS product.
+    what_good_looks_like:
+      - Defines roles/permissions model and common workflows.
+      - Designs for safety (audit logs, least privilege, bulk changes).
+      - Considers scale (thousands of users) and integrations (SCIM/SSO).
+      - Defines success metrics (time to onboard, error rates).
+    answer:
+      structure:
+        - Clarify customer segment and security/compliance needs.
+        - Identify core workflows (invite, roles, groups, deprovision).
+        - Propose information architecture and safeguards.
+        - Metrics and rollout.
+      sample: >
+        Admins need predictable, safe workflows. MVP: a Users table with bulk actions, role
+        assignment, group membership, and status (active/suspended). Include SSO + SCIM setup wizard
+        for enterprises, plus an audit log of permission changes. Safety: default least-privilege
+        roles, confirmation for destructive actions, and “break-glass” admin policy.
+
+        Success: time to onboard a new employee, reduction in access-related tickets, and low rate
+        of permission mistakes.
+    follow_ups:
+      - How do you design roles: fixed vs custom?
+      - What’s your approach to audit and compliance exports?
+  - id: PD-019
+    difficulty: medium
+    prompt: Design a feature to help people find quiet places to work in a city.
+    what_good_looks_like:
+      - Clarifies user constraints (wifi, outlets, noise, hours, cost).
+      - Uses supply data sources and community signals.
+      - Addresses trust and freshness of information.
+      - Defines marketplace/ops considerations if needed.
+    answer:
+      structure:
+        - Clarify persona and constraints.
+        - Propose discovery + verification signals.
+        - MVP and measurement.
+      sample: >
+        I’d target remote workers who need 1–3 hour work blocks. Filters matter: noise level, wifi
+        reliability, outlets, seating, and minimum spend. MVP: a map/list with these filters and a
+        “quiet now” indicator driven by recent check-ins and lightweight crowd signals (user reports
+        + time-of-day patterns).
+
+        To keep data fresh, prompt users after they leave: “Was it quiet? Wifi ok?” and reward with
+        badges. Success: search → visit conversion, repeat usage, and low complaint rate about
+        inaccurate info.
+    follow_ups:
+      - How do you prevent fake reports?
+      - How do you seed supply data?
+  - id: PD-020
+    difficulty: hard
+    prompt: Design an internal tool to help a sales team qualify leads faster.
+    what_good_looks_like:
+      - Clarifies ICP and qualifying criteria with stakeholders.
+      - Integrates data sources (CRM, product usage, firmographics) and explains scoring.
+      - Designs for trust, override, and feedback loops.
+      - Defines measurable outcomes and guardrails.
+    answer:
+      structure:
+        - Clarify qualification process and bottlenecks.
+        - Propose lead scoring + recommended actions.
+        - UI/UX and feedback loop.
+        - Metrics and rollout.
+      sample: >
+        I’d interview top reps to understand what “qualified” means and what signals they actually
+        trust. MVP: a “Lead Brief” panel inside the CRM that summarizes firmographics, intent
+        signals, and product usage (if applicable), plus a transparent qualification score with top
+        drivers (“High: fits ICP, engaged in last 7 days”).
+
+        Include one-click actions: email sequences, schedule call, or disqualify with reason. Add a
+        feedback loop where reps can mark the score wrong and choose why; that becomes training
+        data. Success: time to first touch, conversion to meeting, win rate, and guardrail: false
+        positives that waste rep time.
+    follow_ups:
+      - How do you handle bias in lead scoring?
+      - What if reps don’t trust the score?
+  - id: PD-021
+    difficulty: medium
+    prompt: Design a feature for a calendar app that reduces meeting overload.
+    what_good_looks_like:
+      - Defines overload and identifies behavioral drivers.
+      - Proposes prevention and optimization, not just analytics.
+      - Considers org dynamics and change management.
+      - Defines metrics and guardrails.
+    answer:
+      structure:
+        - Clarify users and overload symptoms.
+        - Propose interventions (limits, nudges, defaults).
+        - Metrics and rollout plan.
+      sample: >
+        Overload shows up as fragmented focus time and meeting bloat. Feature: “Focus Budget” that
+        makes meeting cost visible (attendees × duration) and nudges organizers to reduce attendees
+        or time. Add defaults like 25/50-minute meetings and smart “no agenda, no meeting” prompts.
+        For individuals, protect focus blocks and suggest declining or making optional meetings that
+        don’t require them.
+
+        Metrics: meeting hours per employee, focus block preservation, and employee sentiment.
+        Guardrails: missed decisions or slower project delivery.
+    follow_ups:
+      - How do you avoid being ignored?
+      - How do you handle executives who over-schedule?
+  - id: PD-022
+    difficulty: easy
+    prompt: Design a feature that helps users track water intake.
+    what_good_looks_like:
+      - Keeps MVP simple and habit-forming.
+      - Uses reminders and logging with low friction.
+      - Personalizes goals.
+      - Defines success metrics.
+    answer:
+      structure:
+        - Clarify user and goal.
+        - MVP logging and reminders.
+        - Metrics.
+      sample: >
+        MVP: one-tap logging for common cup sizes, a daily goal personalized by weight/activity, and
+        smart reminders spaced based on when the user tends to drink. Show a simple progress ring
+        and weekly streaks. Success: daily active loggers and % days meeting goal.
+    follow_ups:
+      - How do you handle users who hate tracking?
+      - Would you integrate with wearables?
+  - id: PD-023
+    difficulty: hard
+    prompt: Design a feature to help teenagers learn financial literacy in a banking app.
+    what_good_looks_like:
+      - Identifies stakeholder constraints (parents, regulators, safety).
+      - Proposes engaging learning tied to real actions (saving, budgeting).
+      - Avoids manipulation and respects privacy.
+      - Defines learning + business metrics.
+    answer:
+      structure:
+        - Clarify age range and parental controls.
+        - Choose learning objectives.
+        - Tie lessons to product moments.
+        - Metrics and safeguards.
+      sample: >
+        I’d target 13–17 with parental oversight. Learning goals: budgeting basics, saving, and
+        responsible spending. MVP: “Money Missions” that unlock when they take real actions: set a
+        saving goal, track spending categories, or wait 24 hours before a discretionary purchase.
+        Keep lessons short (1–2 minutes) and reward with non-monetary badges.
+
+        Safeguards: parental visibility controls, no targeted ads, and clear privacy boundaries.
+        Metrics: mission completion, savings rate, and retention; guardrails: overspending incidents
+        and parental complaints.
+    follow_ups:
+      - How do you keep it engaging without gambling-like rewards?
+      - What would you do differently for 18–22?
+  - id: PD-024
+    difficulty: medium
+    prompt: Design a feature that helps users discover relevant podcasts.
+    what_good_looks_like:
+      - Uses personalization signals and explains recommendations.
+      - Balances exploration vs exploitation.
+      - Considers creator ecosystem and fairness.
+      - Defines metrics.
+    answer:
+      structure:
+        - Clarify discovery problem and user segments.
+        - Propose recommendation surfaces.
+        - Metrics and guardrails.
+      sample: >
+        For discovery, users want “something I’ll like” with low risk. MVP: a weekly “podcast
+        sampler” playlist of 10 short clips from episodes, personalized by topics and listening
+        history. Let users quickly like/skip to train preferences. Explain: “Because you follow X
+        and listened to Y”.
+
+        Metrics: starts, completions, follows, and 4-week retention; guardrails: diversity and
+        creator concentration.
+    follow_ups:
+      - How do you avoid echo chambers?
+      - How do you help brand-new users?
+  - id: PD-025
+    difficulty: medium
+    prompt: Design an in-app reporting flow for harmful content that users trust.
+    what_good_looks_like:
+      - Minimizes user burden while collecting enough info.
+      - Sets clear expectations (SLAs, what happens next).
+      - Handles abuse and false reports.
+      - Defines metrics for safety and user trust.
+    answer:
+      structure:
+        - Clarify content types and policies.
+        - Design reporting steps and confirmation.
+        - Triage and communication.
+        - Metrics and guardrails.
+      sample: >
+        Reporting should be fast and transparent. MVP: a 2-step flow: pick category (harassment,
+        spam, self-harm, etc.) then confirm, with an optional text box. Immediately acknowledge
+        receipt and show what to expect (e.g., “we’ll review within 24 hours”). For high-severity
+        categories, offer additional actions like blocking or crisis resources.
+
+        Back-end triage routes reports by severity and reporter trust signals; rate-limit abusive
+        reporters. Metrics: report completion rate, time-to-action for high severity,
+        false-positive/false-negative audits, and reporter satisfaction.
+    follow_ups:
+      - How do you prevent brigading/false reporting?
+      - Should you inform the reported user?
+  - id: PD-026
+    difficulty: medium
+    prompt: How would you improve Google Maps?
+    what_good_looks_like:
+      - Clear understanding of the product and its users.
+      - Asks clarifying questions to define scope and objectives.
+      - >-
+        Presents a structured approach to problem-solving (personas, pain points, solutions,
+        prioritization).
+      - Identifies diverse user personas and selects one for deep dive.
+      - Articulates specific pain points for the chosen persona.
+      - Generates multiple, relevant feature ideas to address pain points.
+    answer:
+      structure:
+        - >-
+          **1. Understand the Product:** Briefly describe the product's current functionality and
+          value.
+        - >-
+          **2. Clarify Scope & Objectives:** Ask targeted questions about the goal (e.g., overall
+          improvement vs. specific feature, metric focus, platform).
+        - >-
+          **3. Outline Approach:** State the structured methodology to be followed (e.g., users,
+          pain points, solutions, prioritization).
+        - >-
+          **4. Identify Users & Pain Points:** Segment users, choose a specific persona, and detail
+          their current challenges or unmet needs.
+        - >-
+          **5. Brainstorm Solutions:** Propose multiple features or improvements directly addressing
+          the identified pain points.
+        - >-
+          **6. Prioritize & Justify:** Evaluate solutions based on a framework (e.g., impact vs.
+          effort/cost) and justify choices.
+        - >-
+          **7. Summarize & Recommend:** Conclude with the recommended feature(s) and a rationale for
+          their selection.
+      sample: >-
+        Describe Google Maps - Google Maps allows user to go from Point A to Point B efficiently and
+        provides several commute options such as driving, walking, public transport, and even like
+        to ride sharing apps such as Uber and Lyft. User also uses Google Maps to search nearby
+        places such as restaurants, gas stations, events, and things to do. 
+
+
+        Ask Clarifying Questions from the Interviewer - 
+
+        - Is the goal to improve the entire platform or a specific feature?
+
+        - Is the improvement channel specific - Web or Mobile?
+
+        - What's the objective of improvement? - engagement, increase in revenue, acquisition. etc.
+
+
+        Once interviewer provides clarification to above question, I would start by first laying out
+        the approach I am going to take to 
+
+        (a) start by understanding who are users (personas) of Google Maps are, 
+
+        (b) Pick one persona and what their goals or motivations are when using Google Maps
+
+        (c) Then I will identify pain points (user needs) and suggest new features/ solutions to
+        increase customer satisfaction leading to better customer engagement 
+
+        (d) next, I will prioritize new features based on cost vs benefit, (e) Lastly I will
+        summarize the overall analysis
+
+
+        Users of Google Maps
+
+        - Private vehicle owners
+
+        - Bikers
+
+        - Commuters using public transport
+
+        - Walkers
+
+        - Tourists
+
+        - People using ride sharing app like Uber, Lyft etc.
+
+
+        I am going to pick commuters using public transport such as train, bus, subways to go from
+        point A to point B. Commuters hate when there is interruption is services that could be
+        because of trains running late, major breakdown, change in train timing and route. People
+        don't like waiting even if the train or bus is late by couple of minutes. Also not all train
+        and bus stations are same when it comes to amenities such as access to elevators, public
+        bathrooms, and information booth. Commuters such as old age people, family traveling with
+        infants, and physically challenged people need these information in advance to plan their
+        trip efficiently.
+
+
+        Considering the above pain points that I just mentioned, here are few feature/ use cases
+        that Google Maps can offer to delight the commuters
+
+        - Personalized real-time notification to commuter when there is interruption in the service
+        (this is especially useful to people commuting daily say from home to office and back).
+        Google knows some very vital information about the commuter like at what time they start
+        from home, from which station they take train, what time they head back home. These
+        information can be used to send real-time train/bus service alert to commuter, so that they
+        can prepare in advance, say may look for alternate route of mode of transportation. 
+
+        - Book uber/ lyft for commuter, to the nearest alternate train/bus station, so that they can
+        reach their destination on-time.
+
+        - Train/ bus station information catalog showing all amenities and contact information. The
+        catalog should get updated on regular interval,. So that commuter is aware of the change say
+        elevator at station X is going through periodic maintenance
+
+        - Collaboration platform that will categorize station based on people input on incidents
+        such as number of theft, people fallen on track, people got stuck in between train and
+        platform, or even broken machine. This will make people self-aware and will tell them to
+        ride safe.        
+
+
+        Now, I will prioritize the solutions across the user goal and complexity of development. The
+        user's goals is to reach from point A to point B efficiently with most up to date
+        information. 
+
+
+        Solution
+
+
+        Impact to User Goal
+
+
+        Complexity
+
+
+        1. Personalized real-time notification
+
+
+        High: prompt and timely notification about delay or change in service will allow commuter to
+        look for backup plan. They may opt to work remotely on that day. Also providing targeted
+        notification is more valuable to user
+
+
+        Medium: Google maps already capture information like train running late, where the
+        congestion is.
+
+
+        2. Book Lyft/Uber for commuter
+
+
+        Low: not all commuter have same affordability level, they may find Lyft/Uber expensive
+        option.  Also not everyone has Uber/ Lyft account.  This may serve just a subset of overall
+        commuter population
+
+
+        Low: Google Maps already shows ride sharing option to user when they search for route.
+
+
+        3. Information catalog
+
+
+        High: having up to date information about the station will help commuter plan their trip
+
+
+        Medium: easy to develop initially but require ongoing maintenance to make sure that
+        information is up to date and accurate.
+
+
+        4. Train/Bus station rating
+
+
+        High: getting review from other commuter increases trust.
+
+
+        High: will require developing collaborate feature in Google Maps that will allow other
+        commuters to update and provide information such as how many ticket vending machine are
+        working, which machine is not accepting cash, etc.
+
+
+        From the table, the two features that provide the highest impact for the lowest effort are
+        (a) personalized real-time notification and (b) Information catalog. My recommendation would
+        to start with these two solutions while also start brainstorming on building collaborative
+        feature with in Google Maps as this will definitely change the way people see and use Google
+        Maps today.
+    follow_ups:
+      - How would you measure the success of your recommended features?
+      - What are the potential risks or negative side effects of implementing these changes?
+      - >-
+        How would these improvements align with Google's broader business strategy or monetization
+        goals?
+      - >-
+        You rated 'Book Uber/Lyft' as low impact. Can you elaborate on why you think it wouldn't be
+        valuable to a larger user segment?
+      - >-
+        What would be your Minimum Viable Product (MVP) for the 'Personalized real-time
+        notification' feature?
+      - >-
+        How would you address the ongoing maintenance challenge for the 'Information catalog'
+        feature?

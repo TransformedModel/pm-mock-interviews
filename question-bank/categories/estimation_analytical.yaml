@@ -1,0 +1,303 @@
+version: 1
+category: Estimation (Analytical)
+questions:
+  - id: EA-001
+    difficulty: easy
+    prompt: Estimate the number of cups of coffee consumed in Singapore per day.
+    what_good_looks_like:
+      - Clarifies geography and definition (coffee drinks vs cups; includes cafes + instant?).
+      - Chooses a clear top-down or bottom-up structure.
+      - States assumptions explicitly and sanity-checks the result.
+      - Communicates ranges and sensitivity drivers.
+    answer:
+      structure:
+        - Clarify scope and define “cup”.
+        - Choose approach (population × consumption frequency).
+        - Do math with round numbers; provide range.
+        - Sanity-check vs cafe counts / imports.
+      sample: >
+        I’ll estimate cups of coffee drinks consumed (including instant and cafe) by residents + commuters in Singapore.
+        Population ~6M. Assume 70% adults (~4.2M). Of adults, say 60% drink coffee daily (~2.5M). Average daily cups among
+        drinkers: maybe 1.2 (some 1, some 2+). That yields ~3.0M cups/day.
+
+        Add non-daily drinkers: remaining 1.7M adults maybe 1 cup/week on average → ~0.25M/day. Add teens/others: ~0.2M/day.
+        Total ~3.5M cups/day, range 3–5M depending on daily drinker % and cups per drinker.
+    follow_ups:
+      - What assumption matters most?
+      - How would you validate this quickly?
+      - How would your estimate change if we only count cafe-bought coffee?
+
+  - id: EA-002
+    difficulty: medium
+    prompt: Estimate the annual revenue of Netflix in India.
+    what_good_looks_like:
+      - Breaks revenue into subscribers × ARPU × months.
+      - Uses plausible penetration and pricing tiers.
+      - Mentions paid sharing, bundles, or telco partnerships as adjustments.
+      - Provides a range and checks reasonableness.
+    answer:
+      structure:
+        - Clarify whether to include ads, bundles, etc.
+        - Estimate subscriber base via households × penetration.
+        - Estimate ARPU using tier mix.
+        - Compute annual revenue and range.
+      sample: >
+        I’ll estimate subscription revenue (not ads). India population ~1.4B; households ~300M. Suppose “addressable” is
+        urban/middle-class households with broadband/smartphones: maybe 80M. Assume Netflix penetration 5–10% of that:
+        4–8M paying accounts.
+
+        ARPU: Netflix has low-cost mobile plans; assume blended ARPU ~$4–6/month. Annual revenue = 4–8M × $4–6 × 12
+        ≈ $192M to $576M. Midpoint: ~6M × $5 × 12 = $360M/year.
+    follow_ups:
+      - How does competition change your penetration assumption?
+      - How would ad-supported tiers affect ARPU?
+
+  - id: EA-003
+    difficulty: medium
+    prompt: How many rides does a typical Uber driver complete per day in a major city?
+    what_good_looks_like:
+      - Clarifies city type, driver hours, and whether including downtime.
+      - Uses a cycle-time model: (trip duration + pickup + idle).
+      - Provides a range for part-time vs full-time drivers.
+      - Sanity-checks with observed wait times and traffic.
+    answer:
+      structure:
+        - Clarify driver type and hours.
+        - Model average trip cycle time.
+        - Convert hours → rides; provide ranges.
+      sample: >
+        Assume a full-time driver works 8–10 hours “online”. Average trip: 15 minutes in-car + 5 minutes pickup + 5 minutes
+        idle repositioning → ~25 minutes per ride cycle. That’s ~2.4 rides/hour.
+
+        Over 9 hours: 9 × 2.4 ≈ 22 rides/day. Range: 15–30 depending on traffic, city density, and surge demand; part-time
+        4–5 hours would be ~10–12 rides.
+    follow_ups:
+      - How would peak-hour demand change this?
+      - What data would you ask Uber for to refine?
+
+  - id: EA-004
+    difficulty: hard
+    prompt: You own a B2B SaaS product. DAU dropped 20% overnight. Walk me through your analysis.
+    what_good_looks_like:
+      - Starts with validation: instrumentation, definition changes, logging.
+      - Segments by platform, geography, customer, and cohort.
+      - Uses funnel + infra checks + release correlation.
+      - Produces an action plan with owners and comms.
+    answer:
+      structure:
+        - Confirm the metric is real (tracking, sampling, dashboards).
+        - Scope impact (which users/accounts/platforms).
+        - Hypothesize buckets: product change, infra/latency, auth, pricing, external events.
+        - Narrow with data: time series, segment splits, error logs.
+        - Mitigate quickly; then root-cause and prevention.
+      sample: >
+        First I’d validate DAU: did the definition or event pipeline change? Check ingestion lag, dropped events, and whether
+        other metrics (sessions, page views) dropped similarly. If the metric is real, I’d segment: which customers, plans,
+        geos, devices, and entry points. I’d correlate the timestamp to deployments, incidents, or upstream dependencies.
+
+        Next I’d inspect the login funnel: login page loads, auth success, token refresh, and error rates. A DAU drop often
+        comes from auth breakage, a permissions issue, or performance regression. I’d also check whether one major enterprise
+        customer churned or had an outage (account-level DAU).
+
+        Mitigation: if correlated with a release, consider rollback; if infra, scale/restore; if auth, hotfix and communicate
+        to affected customers. Then do a postmortem with monitoring and canarying improvements.
+    follow_ups:
+      - What if only iOS users dropped?
+      - What if DAU dropped but revenue stayed flat?
+      - How do you decide to rollback vs hotfix?
+
+  - id: EA-005
+    difficulty: medium
+    prompt: Estimate the number of email addresses created worldwide per day.
+    what_good_looks_like:
+      - Defines “created” vs “active” and whether to include aliases.
+      - Uses population/internet users and signup rates.
+      - Applies a sanity check using known provider scales.
+      - Provides a range.
+    answer:
+      structure:
+        - Clarify definition.
+        - Estimate new internet users + new account creation per user/year.
+        - Convert to daily; provide range.
+      sample: >
+        Define “created email address” as a new mailbox (not aliases). Global internet users ~5B. New internet users maybe
+        ~200M/year → ~0.55M/day, many create at least one email, so ~0.5M/day baseline.
+
+        Existing users also create new addresses (work, spam, new providers). Suppose 10% create one new address per year:
+        0.10 × 5B = 500M/year → ~1.4M/day. Total ~2M/day. Range 1–5M/day depending on the “new address per user” rate.
+    follow_ups:
+      - How would you validate this?
+      - What assumption is most uncertain?
+
+  - id: EA-006
+    difficulty: hard
+    prompt: Estimate the market size (annual GMV) for online grocery delivery in the US.
+    what_good_looks_like:
+      - Decomposes into households × grocery spend × online penetration.
+      - Addresses frequency and average order value.
+      - Handles TAM vs SAM vs SOM explicitly.
+      - Gives a range and notes macro drivers.
+    answer:
+      structure:
+        - Clarify TAM vs current market.
+        - Estimate total grocery spend, then apply online share.
+        - Cross-check with order model.
+      sample: >
+        I’ll estimate current annual GMV. US households ~130M. Average grocery spend maybe ~$150/week → ~$7,800/year.
+        Total grocery spend ≈ 130M × $7.8k ≈ $1.0T/year.
+
+        Online grocery delivery share: assume 10–15% of spend → $100–150B GMV/year. Cross-check: if 30M households place
+        1 delivery/week at $90 AOV → 30M × 52 × $90 ≈ $140B. That’s consistent; range $80–180B.
+    follow_ups:
+      - What would make online share increase fastest?
+      - How would you estimate SOM for a new entrant?
+
+  - id: EA-007
+    difficulty: medium
+    prompt: Estimate how many photos are uploaded to Instagram per minute.
+    what_good_looks_like:
+      - Clarifies whether including stories/reels vs feed posts.
+      - Uses MAU/DAU and posting frequency.
+      - Provides order-of-magnitude estimate with range.
+      - Sanity-checks with known scale signals.
+    answer:
+      structure:
+        - Define scope (feed photos only).
+        - Estimate daily posts = active users × posts/user/day.
+        - Convert to per minute.
+      sample: >
+        I’ll estimate feed photo posts (excluding stories/reels). Suppose Instagram DAU ~500M–700M globally. Assume average
+        daily posting is low: maybe 1% post a feed photo per day (many lurk). That’s 5–7M photos/day.
+        Per minute: 5–7M / 1,440 ≈ 3,500–4,900 photos/minute. Range 2k–10k depending on posting rate.
+    follow_ups:
+      - How would including Stories change your estimate?
+      - What’s the biggest driver: DAU or posting rate?
+
+  - id: EA-008
+    difficulty: hard
+    prompt: You launched a new search ranking model. Conversion is up, but complaints about “relevance” increased. Explain why and what you do next.
+    what_good_looks_like:
+      - Recognizes metric misalignment and segment effects.
+      - Discusses short-term conversion vs long-term trust/retention.
+      - Proposes diagnostics: query segments, dissatisfaction signals, offline eval.
+      - Suggests mitigations: constraints, diversity, calibration, UI changes.
+    answer:
+      structure:
+        - Clarify what “conversion” means and time horizon.
+        - Hypothesize causes (over-optimization, novelty, query mix).
+        - Segment analysis (head vs tail queries, intents).
+        - Decide on next steps and guardrails.
+      sample: >
+        Conversion up could mean we’re better at commercial intents, but complaints suggest we’re failing for informational
+        or long-tail queries. The model might be over-optimizing short-term clicks/purchases, showing repetitive or sponsored
+        items, or reducing diversity—users convert sometimes but feel the results are less trustworthy.
+
+        Next I’d segment by query intent, new vs returning users, and complaint origin. I’d look at dissatisfaction signals:
+        rapid reformulations, pogo-sticking, time-to-result, and “back” rates. I’d also run offline relevance evaluation with
+        human labels and compare against the old model.
+
+        Mitigation options: add guardrail objectives (diversity/fairness), calibrate ranking for informational intents, and
+        adjust UI to label sponsored content. I’d keep the win where it’s real but prevent long-term trust erosion.
+    follow_ups:
+      - What guardrail metrics would you add?
+      - How would you run a rollback decision?
+
+  - id: EA-009
+    difficulty: medium
+    prompt: Estimate the number of elevators in New York City.
+    what_good_looks_like:
+      - Chooses a structured proxy (buildings by type × elevators per building).
+      - Uses rough counts and checks plausibility.
+      - Communicates uncertainty and range.
+    answer:
+      structure:
+        - Estimate number of buildings by height class.
+        - Multiply by average elevators per class.
+        - Add commercial vs residential adjustment.
+      sample: >
+        NYC has lots of low-rises plus many high-rises. Suppose ~1M housing units; maybe ~30% are in elevator buildings.
+        If average elevator building has ~50 units, then elevator residential buildings ≈ (0.3 × 1M) / 50 = 6,000 buildings.
+        Assume average 2 elevators each → 12,000.
+
+        Add commercial high-rises and hotels: say 1,000 buildings averaging 6 elevators → 6,000. Total ~18,000 elevators,
+        range 10k–30k.
+    follow_ups:
+      - How would you validate with public data?
+      - What assumption is most sensitive?
+
+  - id: EA-010
+    difficulty: hard
+    prompt: How would you design an A/B test to measure whether a new checkout page increases revenue?
+    what_good_looks_like:
+      - Defines primary metric and guardrails (conversion, AOV, refunds).
+      - Handles sample size, duration, and seasonality.
+      - Considers randomization unit (user vs session) and contamination.
+      - Includes analysis plan and monitoring.
+    answer:
+      structure:
+        - Define hypothesis and metrics.
+        - Choose randomization unit and eligibility.
+        - Estimate sample size and runtime; handle seasonality.
+        - Guardrails and rollout.
+      sample: >
+        Hypothesis: the new checkout reduces friction and increases completed orders. Primary metric: revenue per user (or per
+        session) to capture conversion and AOV. Guardrails: refund rate, payment failures, latency, and customer support
+        contacts.
+
+        Randomize at user level to avoid contamination across sessions; exclude bots and internal traffic. Run for at least
+        1–2 business cycles (often 2 weeks+) to capture weekday patterns, and ensure enough power to detect a small lift.
+        Monitor SRM (sample ratio mismatch), and predefine stopping rules. If successful, ramp gradually with monitoring.
+    follow_ups:
+      - When would you choose conversion rate instead of revenue/user?
+      - How do you handle repeated exposures across devices?
+
+  - id: EA-011
+    difficulty: medium
+    prompt: Estimate the number of people who watch YouTube on a TV screen in the US each month.
+    what_good_looks_like:
+      - Clarifies “TV screen” (smart TV apps, casting, consoles).
+      - Uses households, penetration, and viewing behavior.
+      - Gives a range with sensitivity drivers.
+    answer:
+      structure:
+        - Estimate US households and smart TV penetration.
+        - Estimate fraction using YouTube on TV monthly.
+        - Convert to people via household size.
+      sample: >
+        US households ~130M. Smart TV/streaming device penetration is high; assume 90% have some TV-connected device:
+        ~117M. Suppose 40–60% use YouTube on TV monthly: ~47–70M households.
+
+        People per household watching: maybe 1.5 on average → ~70–105M people/month. Range 60–120M depending on adoption.
+    follow_ups:
+      - How would you validate this estimate quickly?
+      - What cohort would be the biggest driver?
+
+  - id: EA-012
+    difficulty: hard
+    prompt: Your subscription product’s churn rose from 3% to 5% monthly. What analyses do you run and what actions do you take?
+    what_good_looks_like:
+      - Distinguishes voluntary vs involuntary churn.
+      - Segments churn by cohort, plan, channel, and lifecycle stage.
+      - Looks for product usage leading indicators and pricing/competition factors.
+      - Proposes a prioritized action plan with experiments.
+    answer:
+      structure:
+        - Validate churn definition and measurement window.
+        - Segment churn (voluntary/involuntary; cohorts; plans).
+        - Diagnose drivers (value, friction, price, support, competition).
+        - Decide mitigations and experiments.
+      sample: >
+        First I’d confirm whether churn is voluntary cancellations or payment failures, and whether billing logic changed.
+        Then segment: new cohorts vs mature cohorts, by plan, by acquisition channel, and by geography. A jump often means a
+        specific cohort got worse or a payment processor changed.
+
+        I’d inspect leading indicators: feature usage frequency, time-to-value, and support contacts. If voluntary churn,
+        analyze cancellation reasons and competitor switching. If involuntary, focus on dunning and payment retries.
+
+        Actions: address the largest segment first. For voluntary churn, improve onboarding and core value delivery and test
+        save offers/pause plans. For involuntary churn, improve retries, card updater, and notifications. Track retention and
+        LTV impact with guardrails for discounting.
+    follow_ups:
+      - What’s the fastest “stop the bleeding” move?
+      - How do you avoid over-discounting?
+

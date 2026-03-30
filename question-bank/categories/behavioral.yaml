@@ -1,0 +1,363 @@
+version: 1
+category: Behavioral
+questions:
+  - id: BE-001
+    difficulty: easy
+    prompt: Tell me about yourself.
+    what_good_looks_like:
+      - Provides a concise narrative: past → present → why this role.
+      - Highlights 2–3 strengths with evidence, not buzzwords.
+      - Connects experience to the company/product.
+      - Ends with a clear transition to the interview.
+    answer:
+      structure:
+        - One-liner identity and domain.
+        - 2–3 impact stories (metrics).
+        - Why this company/role now.
+      sample: >
+        I’m a product manager who builds 0→1 and growth features for consumer and B2B products, typically in cross-functional
+        teams of 6–12. In my last role, I led a new onboarding funnel that improved activation by 18% and reduced support
+        tickets by 25% by tightening the KYC flow and clarifying value earlier. Before that, I ran a platform initiative to
+        standardize analytics events and experimentation, which cut time-to-insight from days to hours and enabled faster
+        iteration.
+
+        I’m excited about this role because it combines user-facing product design with data-driven iteration, and your team
+        is tackling a problem I’ve worked on—helping users reach value quickly while maintaining trust and reliability.
+        I’m happy to go deeper on any of those experiences.
+    follow_ups:
+      - What’s the most relevant accomplishment to this role?
+      - What are you optimizing for in your next role?
+
+  - id: BE-002
+    difficulty: medium
+    prompt: Tell me about a time you influenced without authority.
+    what_good_looks_like:
+      - Uses STAR with clear stakes and constraints.
+      - Demonstrates stakeholder mapping and tailored communication.
+      - Shows trade-offs and how alignment was achieved.
+      - Includes measurable result and learning.
+    answer:
+      structure:
+        - Situation + why it mattered.
+        - Stakeholders and their incentives.
+        - Actions to build alignment (data, prototypes, pilots).
+        - Results and reflection.
+      sample: >
+        Situation: We needed to add instrumentation to a legacy flow to diagnose a 10% drop in activation, but the platform
+        team was overloaded and didn’t report into product. Task: get the work prioritized without escalation.
+
+        I mapped stakeholders: platform leads cared about stability and roadmap commitments; support cared about ticket load;
+        growth cared about activation. I quantified the impact: the activation drop equaled ~X lost signups/week and Y in
+        revenue. I proposed a small-scope plan: 8 events, 1 dashboard, and I volunteered to write the event specs and QA
+        checklist to reduce engineer time. I also arranged a 2-week pilot with clear “done” criteria and a rollback plan.
+
+        Result: platform agreed to a timebox, we shipped the events, found a regression in one mobile OS, and recovered the
+        activation loss within two weeks. Learning: reducing uncertainty and effort for the other team mattered more than
+        arguing priority.
+    follow_ups:
+      - What would you do if they still said no?
+      - How did you avoid stepping on toes?
+
+  - id: BE-003
+    difficulty: medium
+    prompt: Describe a time you disagreed with an engineer or designer. What happened?
+    what_good_looks_like:
+      - Demonstrates respect, curiosity, and alignment on user/business goals.
+      - Uses data or experiments rather than opinion.
+      - Resolves conflict with a decision-making mechanism.
+      - Reflects on what you’d do differently.
+    answer:
+      structure:
+        - Context + disagreement.
+        - Shared goal and constraints.
+        - How you evaluated options.
+        - Decision and outcome.
+      sample: >
+        We disagreed on whether to ship a complex personalization feature in the first release. Design wanted the richer
+        experience; engineering worried about performance and maintainability. I aligned us on the goal: improve day-7
+        retention without increasing app load time. We listed options: full personalization, a rule-based MVP, or a static
+        curated set.
+
+        I proposed an experiment: ship a rule-based MVP with strong measurement and a clear performance budget. Design
+        produced two variants within constraints; engineering agreed to instrument and monitor. We shipped the MVP, saw a 6%
+        lift in retention with no latency regression, and used learnings to justify investing in the richer system later.
+    follow_ups:
+      - How do you handle it when you’re wrong?
+      - How do you decide when to escalate?
+
+  - id: BE-004
+    difficulty: hard
+    prompt: Tell me about a product you shipped that failed.
+    what_good_looks_like:
+      - Takes ownership without blaming.
+      - Clearly explains hypotheses, what was missed, and how you learned.
+      - Shows concrete corrective actions and process improvements.
+      - Connects to future behavior.
+    answer:
+      structure:
+        - What you shipped and expected outcome.
+        - What actually happened and why.
+        - What you changed afterward.
+      sample: >
+        We launched a referral incentive expecting viral growth. We saw initial signups, but retention and quality were poor,
+        and support tickets spiked due to abuse. In hindsight, we optimized for acquisition without guardrails and didn’t
+        understand the incentive sensitivity by segment.
+
+        I owned the miss: we should have run a smaller pilot and defined abuse guardrails (fraud rate, chargebacks, ticket
+        volume). After launch, we paused the program, added eligibility constraints and fraud detection, and redesigned the
+        incentive to reward sustained usage rather than raw signups. Process-wise, we introduced a “metric tree” template
+        requiring guardrails for all growth experiments.
+    follow_ups:
+      - What early signals did you ignore?
+      - What would you do if leadership still wanted to push it?
+
+  - id: BE-005
+    difficulty: medium
+    prompt: Tell me about a time you had to say “no” to a stakeholder.
+    what_good_looks_like:
+      - Uses empathy and acknowledges stakeholder needs.
+      - Explains decision with transparent criteria and trade-offs.
+      - Offers alternatives and maintains relationship.
+      - Communicates outcome effectively.
+    answer:
+      structure:
+        - Context and request.
+        - How you evaluated against strategy/impact.
+        - How you communicated and offered alternatives.
+      sample: >
+        Sales wanted a custom feature for a large prospect. I evaluated it against our roadmap and whether it generalized to
+        more customers. The feature was tightly tailored and would consume ~6 engineer-weeks, delaying a platform item that
+        impacted many accounts.
+
+        I said no to building it as a bespoke feature, but offered alternatives: a configuration-based workaround, a services
+        playbook, and a commitment to revisit if we saw the pattern across multiple prospects. I shared the criteria and the
+        opportunity cost openly, and I aligned with Sales on messaging to the customer.
+    follow_ups:
+      - How do you handle escalation pressure?
+      - How do you keep Sales motivated?
+
+  - id: BE-006
+    difficulty: medium
+    prompt: Describe a time you led through ambiguity.
+    what_good_looks_like:
+      - Defines a crisp problem statement and success criteria.
+      - Creates alignment via artifacts (PRD, one-pager) and iteration.
+      - Breaks work into milestones and reduces risk early.
+      - Communicates clearly and adapts.
+    answer:
+      structure:
+        - Ambiguous context.
+        - How you created clarity.
+        - Execution plan and outcome.
+      sample: >
+        We were asked to “improve onboarding” with no clear definition. I started by aligning on outcomes (activation and
+        time-to-value) and mapped the funnel. We found the main drop was during verification. I ran 8 user interviews and
+        reviewed support tickets, then wrote a one-pager with top hypotheses and a prioritized plan.
+
+        We shipped two small experiments first (copy + save/resume), validated the lift, then invested in a larger flow
+        redesign. The ambiguity reduced once we anchored on measurable outcomes and a shared funnel view.
+    follow_ups:
+      - How did you decide what not to do?
+      - How did you keep the team aligned?
+
+  - id: BE-007
+    difficulty: hard
+    prompt: Tell me about a time you handled a production incident or major outage.
+    what_good_looks_like:
+      - Demonstrates calm triage and clear roles/communication.
+      - Balances customer impact and technical constraints.
+      - Shows post-incident learning and prevention.
+      - Includes customer communication and stakeholder management.
+    answer:
+      structure:
+        - Incident context and impact.
+        - Triage steps and decision-making.
+        - Comms and mitigation.
+        - Postmortem actions.
+      sample: >
+        We had an outage where checkout failures spiked to 30% for ~45 minutes. I joined the incident channel, confirmed an
+        incident commander, and focused on customer impact: which geos, which payment methods, and whether there was data
+        loss. We paused an unrelated deployment to reduce variables and posted a status update with a clear ETA range.
+
+        Once we identified a third-party payment degradation, we enabled a fallback provider and temporarily disabled one
+        payment method. After recovery, I led the postmortem: added monitors on upstream latency, improved circuit breakers,
+        and updated the runbook and customer comms templates.
+    follow_ups:
+      - What did you do if engineers disagreed on rollback?
+      - How did you communicate to sales/support?
+
+  - id: BE-008
+    difficulty: medium
+    prompt: Give an example of when you used data to change someone’s mind.
+    what_good_looks_like:
+      - Uses the right level of rigor (not just vanity metrics).
+      - Separates correlation from causation; proposes experiment if needed.
+      - Communicates data in a story with decision implications.
+      - Leads to an action and outcome.
+    answer:
+      structure:
+        - Belief and stakeholder position.
+        - Data gathered and analysis.
+        - Decision and impact.
+      sample: >
+        A stakeholder believed a new feature drove retention because power users loved it. I segmented retention by feature
+        exposure and saw no lift for the median cohort; the correlation was driven by existing power users. I proposed an
+        A/B test and a simpler alternative targeting new users. The experiment showed the alternative improved activation by
+        9% with no retention harm, and we shifted roadmap accordingly.
+    follow_ups:
+      - What if you can’t run an A/B test?
+      - How do you avoid analysis paralysis?
+
+  - id: BE-009
+    difficulty: easy
+    prompt: What is your biggest weakness?
+    what_good_looks_like:
+      - Chooses a real, non-fatal weakness.
+      - Shows concrete mitigation behaviors.
+      - Demonstrates growth over time.
+      - Doesn’t undermine core job requirements.
+    answer:
+      structure:
+        - Weakness in one sentence.
+        - How it shows up.
+        - What you do to mitigate; evidence of progress.
+      sample: >
+        Earlier in my career, I tried to be the “fast responder” and took on too many parallel threads. That sometimes
+        reduced my depth on the most important problem. I’ve improved by using a weekly prioritization ritual, explicitly
+        timeboxing deep work, and pushing more decisions into written docs so I can scale without context switching. My
+        feedback over the last two cycles has been that my prioritization and focus improved significantly.
+    follow_ups:
+      - What feedback have you received recently?
+      - How do you know you’re improving?
+
+  - id: BE-010
+    difficulty: medium
+    prompt: Tell me about a time you mentored or coached someone.
+    what_good_looks_like:
+      - Shows empathy and a tailored approach.
+      - Defines goals and measures progress.
+      - Demonstrates long-term impact.
+      - Avoids taking credit for others’ work.
+    answer:
+      structure:
+        - Person and challenge.
+        - Coaching approach.
+        - Results and learning.
+      sample: >
+        I mentored a new PM who struggled with stakeholder alignment. We set a goal: ship one cross-team feature with clear
+        decision-making and minimal churn. I coached them on writing a crisp one-pager, running structured reviews, and
+        capturing decisions. Over two months, they led a launch with fewer scope changes and received positive feedback from
+        engineering and design. The biggest win was building a repeatable process they could reuse.
+    follow_ups:
+      - How do you give tough feedback?
+      - How do you mentor without micromanaging?
+
+  - id: BE-011
+    difficulty: hard
+    prompt: Describe a time you navigated an ethical dilemma in product decisions.
+    what_good_looks_like:
+      - Identifies stakeholders and potential harms.
+      - Uses principles + policy + data to decide.
+      - Proposes mitigations and monitoring.
+      - Communicates trade-offs transparently.
+    answer:
+      structure:
+        - Context and dilemma.
+        - Options and risks.
+        - Decision and safeguards.
+      sample: >
+        We considered using more aggressive notifications to increase engagement. The risk was harming users prone to
+        compulsive usage and increasing complaints. I framed the decision as balancing business goals with user wellbeing and
+        long-term trust. We limited notifications to user-consented categories, added quiet hours by default, and introduced
+        guardrails (opt-out rate, complaint rate, late-night sessions). We still improved engagement, but within boundaries.
+    follow_ups:
+      - How do you handle pressure from leadership?
+      - What metrics indicate potential harm?
+
+  - id: BE-012
+    difficulty: medium
+    prompt: Why do you want to work here?
+    what_good_looks_like:
+      - Demonstrates research and specific product understanding.
+      - Connects personal motivation to team needs.
+      - Shows realistic view of challenges.
+      - Avoids generic flattery.
+    answer:
+      structure:
+        - Personal motivation.
+        - Specific product/team fit.
+        - Why now.
+      sample: >
+        I’m motivated by building products where trust and reliability are core, and your company sits at the intersection of
+        convenience and high-stakes decision-making. I like that your roadmap involves both improving the core experience and
+        expanding into new workflows. My background in improving activation funnels and shipping platform capabilities maps
+        directly to the problems you’re solving, and I’m excited to do it at this scale.
+    follow_ups:
+      - What concerns do you have about the company?
+      - Which product area would you prioritize first?
+
+  - id: BE-013
+    difficulty: medium
+    prompt: Tell me about a time you managed a difficult stakeholder.
+    what_good_looks_like:
+      - Shows empathy and understanding of incentives.
+      - Establishes communication cadence and decision rules.
+      - Uses data and transparency to reduce conflict.
+      - Achieves a workable outcome.
+    answer:
+      structure:
+        - Stakeholder behavior and impact.
+        - Root cause and incentives.
+        - Actions and outcome.
+      sample: >
+        A stakeholder frequently changed requirements late, causing churn. I set up a weekly decision meeting with an
+        explicit agenda and a “decision log” that captured scope, rationale, and dates. I also brought a simple impact model
+        showing how late changes moved delivery dates. Over time, the stakeholder shifted to earlier input, and scope churn
+        decreased materially.
+    follow_ups:
+      - How did you handle escalation?
+      - How do you stay calm in conflict?
+
+  - id: BE-014
+    difficulty: medium
+    prompt: When have you made a decision with incomplete information?
+    what_good_looks_like:
+      - States what information was missing and why.
+      - Uses assumptions and risk mitigation (reversible decisions, guardrails).
+      - Communicates decision clearly.
+      - Reflects on outcome and learning.
+    answer:
+      structure:
+        - Context and missing info.
+        - Decision approach and risk mitigation.
+        - Outcome and learning.
+      sample: >
+        We had to decide whether to ship a feature before a conference with limited user research. I made assumptions
+        explicit, prioritized reversible decisions, and shipped behind a feature flag to a small cohort. We monitored key
+        metrics and support tickets and had a rollback plan. The launch succeeded, and the flag-based approach reduced risk.
+    follow_ups:
+      - How do you decide what’s “good enough” evidence?
+      - How do you document assumptions?
+
+  - id: BE-015
+    difficulty: hard
+    prompt: Tell me about a time you led a cross-functional team through a major roadmap change.
+    what_good_looks_like:
+      - Explains why the change happened (data, strategy shift).
+      - Shows clear comms and re-planning.
+      - Manages morale and stakeholder expectations.
+      - Delivers outcomes despite change.
+    answer:
+      structure:
+        - Trigger for change.
+        - Replan process and stakeholder alignment.
+        - Execution and outcomes.
+      sample: >
+        Mid-quarter, a key metric decline indicated we needed to shift focus from new features to reliability. I created a
+        one-page narrative explaining the data, the impact, and the proposed new priorities. We re-estimated work, cut
+        low-impact items, and aligned leadership and customer-facing teams on messaging. We shipped two reliability fixes
+        that restored the metric and regained customer trust, and we reintroduced deferred features in the next cycle.
+    follow_ups:
+      - How did you handle teams that lost their “pet projects”?
+      - How did you communicate externally?
+

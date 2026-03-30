@@ -1,0 +1,316 @@
+version: 1
+category: Strategy
+questions:
+  - id: ST-001
+    difficulty: medium
+    prompt: Should Spotify enter the audiobooks market? How would you decide and what’s your strategy?
+    what_good_looks_like:
+      - Defines strategic goal (growth, retention, ARPU) and success metrics.
+      - Analyzes market, competition, and differentiation.
+      - Proposes a focused entry strategy (who/what/where) with trade-offs.
+      - Identifies risks (licensing costs, cannibalization) and mitigations.
+    answer:
+      structure:
+        - Clarify objective and constraints.
+        - Market and customer analysis (segments, jobs).
+        - Strategic options (build, buy, partner) and recommendation.
+        - Go-to-market and execution milestones.
+        - Metrics and risks.
+      sample: >
+        I’d decide based on whether audiobooks can improve Spotify’s north-star (time spent + retention) and unit economics
+        without destroying margins. First I’d size: how many of our users already listen to audiobooks elsewhere, and what
+        is the incremental willingness to pay? Then assess supply constraints: licensing costs, exclusivity, and catalogue
+        coverage.
+
+        Strategy: start with a narrow wedge—light audiobook listeners who already use Spotify and want convenience. Offer a
+        hybrid model: à‑la‑carte purchases or limited monthly hours as an add-on, rather than “all you can eat” that could be
+        margin-negative. Differentiate via discovery: use our recommendation engine and creator ecosystem (author
+        interviews/podcasts feeding into books). Roll out in a few English-speaking markets first to learn.
+
+        Metrics: audiobook attach rate, incremental retention, incremental ARPU, content cost per listening hour, and
+        cannibalization of music/podcast engagement. Key risks: poor catalogue breadth, high content costs, and a confusing
+        pricing model; mitigate with partnerships, clear UX labeling, and a staged rollout.
+    follow_ups:
+      - What pricing model would you choose and why?
+      - How do you measure cannibalization?
+      - What would make you stop the initiative?
+
+  - id: ST-002
+    difficulty: hard
+    prompt: Your company has plateaued in its core market. Where do you find the next $1B in revenue?
+    what_good_looks_like:
+      - Starts from company strengths and constraints (capabilities, channels, brand).
+      - Generates a portfolio of growth bets (core, adjacent, new).
+      - Uses structured evaluation (market size, fit, time-to-impact, risk).
+      - Proposes an execution plan with milestones and kill criteria.
+    answer:
+      structure:
+        - Diagnose why core plateaued (penetration, pricing, retention).
+        - Identify growth vectors: new segments, geos, pricing, product lines, platform.
+        - Prioritize using a scoring rubric.
+        - Define a portfolio and operating model.
+      sample: >
+        I’d start with the core: is plateau due to saturation, weaker retention, or channel constraints? There’s often a
+        “hidden” $1B in pricing/packaging, upmarket/downmarket moves, or expansion within existing accounts.
+
+        Then I’d build a portfolio: (1) core optimization (pricing + retention), (2) adjacent expansion leveraging our
+        distribution and data (new workflows for existing customers), and (3) one longer-term new bet. I’d size each and
+        score on strategic fit, margin, time-to-scale, and execution risk. The plan includes milestones every 6–8 weeks and
+        explicit kill criteria so we don’t over-invest in low-signal bets.
+    follow_ups:
+      - How do you balance short-term vs long-term bets?
+      - What data do you need to make this decision?
+
+  - id: ST-003
+    difficulty: medium
+    prompt: How would you set pricing for a new B2B product with no competitors?
+    what_good_looks_like:
+      - Uses value-based pricing anchored to customer ROI.
+      - Proposes packaging/tiering and willingness-to-pay discovery.
+      - Addresses land-and-expand and procurement realities.
+      - Defines experiments and guardrails.
+    answer:
+      structure:
+        - Clarify ICP, job, and measurable value.
+        - Choose pricing metric (per seat, usage, outcomes) and rationale.
+        - Define tiers and packaging.
+        - Run pricing research and pilots.
+      sample: >
+        With no direct competitors, I’d anchor on customer value. First define the ROI model: what cost does this reduce or
+        what revenue does it unlock, and for whom? Then choose a pricing metric that scales with value and is predictable
+        (often seats for workflow tools, usage for API products, or a hybrid).
+
+        I’d propose 3 tiers: Starter for small teams, Pro for core features and integrations, and Enterprise for security,
+        admin, and SLAs. To set price points, I’d run willingness-to-pay interviews, pilot pricing with design partners, and
+        test discounting rules. Guardrails: churn, expansion rate, and sales cycle length.
+    follow_ups:
+      - When would you choose usage-based pricing?
+      - How do you avoid underpricing early?
+
+  - id: ST-004
+    difficulty: hard
+    prompt: Decide whether to build or buy a critical feature (e.g., search, payments, analytics).
+    what_good_looks_like:
+      - Frames decision on differentiation, cost, time, and risk.
+      - Considers long-term maintenance and opportunity cost.
+      - Evaluates vendor lock-in and compliance/security needs.
+      - Proposes a phased approach when appropriate.
+    answer:
+      structure:
+        - Define what must be differentiated vs commodity.
+        - Compare build vs buy: time-to-market, TCO, flexibility.
+        - Risk assessment (security, uptime, roadmap dependency).
+        - Recommendation and transition plan.
+      sample: >
+        I’d ask: is this feature a core differentiator or table stakes? If it’s commodity (e.g., payments), buying often
+        wins on time-to-market and compliance. If differentiation is in user experience or ranking quality (e.g., search),
+        building or a hybrid may be needed.
+
+        I’d compare total cost over 3 years: engineering, infra, compliance, and support versus vendor fees. I’d also factor
+        vendor risk (lock-in, outages, roadmap). A common approach is buy first to learn and get to market, then selectively
+        build components once requirements stabilize and we can justify the investment.
+    follow_ups:
+      - What are your kill criteria for building?
+      - How do you manage vendor outages?
+
+  - id: ST-005
+    difficulty: medium
+    prompt: Your competitor is offering your product for free. What do you do?
+    what_good_looks_like:
+      - Diagnoses competitor motive (growth, switching, upsell, predatory).
+      - Evaluates your differentiation and customer segments at risk.
+      - Proposes multiple responses (pricing, packaging, value, channels).
+      - Avoids panic moves; ties to unit economics.
+    answer:
+      structure:
+        - Clarify which segment is impacted.
+        - Analyze competitor strategy and sustainability.
+        - Decide response: defend core, reposition, or differentiate.
+        - Communication plan and measurement.
+      sample: >
+        First I’d identify which customer segments will churn: price-sensitive SMB vs enterprise. Then understand the
+        competitor’s goal: are they monetizing elsewhere, using it as a loss leader, or trying to win distribution?
+
+        Responses: (1) clarify and strengthen differentiation (reliability, integrations, support), (2) introduce a freemium
+        tier if we can make unit economics work, (3) repackage pricing to align with value delivered, and (4) improve
+        switching costs via data portability and workflows. I’d avoid matching “free” broadly unless we can sustain it; I’d
+        measure churn, win rate, and gross margin impact.
+    follow_ups:
+      - When would you launch freemium?
+      - How do you communicate without sounding defensive?
+
+  - id: ST-006
+    difficulty: hard
+    prompt: Propose a strategy to enter a new geography (e.g., US → SEA) for a consumer app.
+    what_good_looks_like:
+      - Uses a structured market selection approach.
+      - Considers localization, regulation, payments, and distribution.
+      - Proposes a wedge and a scalable operating model.
+      - Defines launch metrics and learning plan.
+    answer:
+      structure:
+        - Pick markets using criteria (TAM, ease, competition, fit).
+        - Define wedge use case and target segment.
+        - Localization and partnerships.
+        - GTM and metrics.
+      sample: >
+        I’d choose markets by TAM, growth, regulatory complexity, and product fit. For SEA, I’d shortlist Singapore/Malaysia
+        as “easy” and Indonesia/Philippines as “high upside”. I’d start where distribution and payments are simplest, learn,
+        then expand.
+
+        The wedge should be a single high-frequency use case with local resonance. I’d localize language, onboarding, and
+        trust signals, and integrate local payment rails. GTM: partnerships and performance marketing tuned by CAC/LTV.
+        Metrics: activation, retention, CAC payback, and referral rate.
+    follow_ups:
+      - What would you localize first?
+      - How do you handle different regulatory regimes?
+
+  - id: ST-007
+    difficulty: medium
+    prompt: How do you decide what your product’s North Star Metric should be?
+    what_good_looks_like:
+      - Connects metric to user value and long-term business value.
+      - Avoids vanity metrics; defines leading vs lagging indicators.
+      - Addresses segmentation and metric gaming.
+      - Defines a metric tree.
+    answer:
+      structure:
+        - Define user value moment.
+        - Choose measurable proxy with strong correlation to retention/revenue.
+        - Build metric tree and guardrails.
+      sample: >
+        I’d start with the value exchange: what outcome makes users come back? The North Star should measure that outcome at
+        a frequency that supports iteration. For example, for a collaboration tool it might be “weekly active teams with X
+        meaningful actions” rather than raw signups.
+
+        Then I build a metric tree: inputs (activation steps, feature usage) → NSM → outcomes (retention, revenue). Add
+        guardrails to prevent gaming (spam actions, low-quality engagement). I’d validate correlation via cohort analysis.
+    follow_ups:
+      - Give an example NSM for a marketplace.
+      - How do you prevent metric gaming?
+
+  - id: ST-008
+    difficulty: hard
+    prompt: Your product is becoming a commodity. How do you build a moat?
+    what_good_looks_like:
+      - Explains different moat types (data, network effects, switching costs, brand, distribution).
+      - Picks moats that match the product and market.
+      - Proposes concrete product and GTM moves.
+      - Addresses timing and trade-offs.
+    answer:
+      structure:
+        - Diagnose why commoditization is happening.
+        - Identify the most feasible moat types.
+        - Propose initiatives and measurement.
+      sample: >
+        I’d first identify which part is commoditizing: core feature parity, pricing pressure, or low differentiation. Then I
+        pick moats aligned to our strengths. For B2B workflow, switching costs and integrations are strong: deepen into
+        critical workflows, build admin/compliance features, and create a platform ecosystem. For consumer, network effects
+        and brand may be stronger: improve sharing loops and community.
+
+        I’d measure moat via retention resilience, expansion rate, and win/loss against similar competitors. The key is to
+        invest where defensibility compounds, not just add features.
+    follow_ups:
+      - What moat works best for AI products?
+      - How do you know you’re building a moat vs features?
+
+  - id: ST-009
+    difficulty: medium
+    prompt: How would you decide whether to cannibalize your own product with a cheaper offering?
+    what_good_looks_like:
+      - Frames cannibalization as a strategic choice vs competitor risk.
+      - Uses segmentation and lifecycle analysis.
+      - Models unit economics and long-term retention.
+      - Proposes guardrails and phased rollout.
+    answer:
+      structure:
+        - Clarify threat (competitor, market shift) and objectives.
+        - Segment customers and identify who would downgrade.
+        - Model economics and brand impact.
+        - Recommend rollout and metrics.
+      sample: >
+        I’d cannibalize if (1) the market is moving downmarket and a competitor will do it anyway, or (2) we can expand TAM
+        meaningfully while preserving LTV. I’d segment: which customers are price-sensitive but high potential, and which
+        would downgrade from premium.
+
+        Then I’d model: incremental acquisition and retention from the cheaper tier vs lost revenue from downgrades, plus
+        support costs. Rollout: limited geos or channels first, with guardrails on downgrade rate, overall revenue/user, and
+        NPS. Packaging matters: keep premium differentiated with features that map to higher willingness-to-pay.
+    follow_ups:
+      - What signals tell you the downgrade risk is too high?
+      - How do you position tiers without confusing customers?
+
+  - id: ST-010
+    difficulty: hard
+    prompt: Create a 1-year strategy for a B2B AI product that summarizes customer support tickets.
+    what_good_looks_like:
+      - Defines ICP and the wedge workflow.
+      - Addresses accuracy, privacy, and evaluation from day one.
+      - Proposes phased roadmap with measurable milestones.
+      - Considers GTM and integration strategy.
+    answer:
+      structure:
+        - Define customer segment and primary job.
+        - Product strategy (wedge → expansion).
+        - Data/privacy/eval plan.
+        - Roadmap phases with metrics.
+      sample: >
+        ICP: mid-market SaaS with 20–200 support agents using Zendesk. Wedge: reduce handle time by summarizing long threads
+        into “Issue / context / steps tried / next action”. Start as an agent-assist sidebar with explicit sources and easy
+        edit/accept.
+
+        Phase 1 (0–3 months): integrate with Zendesk, ship summaries for email tickets, and establish evaluation: human
+        preference ratings and factuality checks. Phase 2 (3–6): add suggested replies and macros; Phase 3 (6–12): expand to
+        QA insights (top issues, deflection opportunities). Privacy: tenant isolation, redaction, and retention controls.
+        Metrics: handle time, CSAT, summary accept rate, and hallucination rate (guardrail).
+    follow_ups:
+      - How do you evaluate hallucinations at scale?
+      - What’s your pricing/packaging approach?
+
+  - id: ST-011
+    difficulty: medium
+    prompt: If you were PM of Google Maps, what would you work on next?
+    what_good_looks_like:
+      - Clarifies goals and user segments.
+      - Identifies high-impact opportunities tied to map usage.
+      - Proposes a prioritized roadmap and metrics.
+      - Shows awareness of constraints (privacy, partnerships).
+    answer:
+      structure:
+        - Clarify objective and scope.
+        - Identify top opportunities.
+        - Prioritize and define MVP + metrics.
+      sample: >
+        I’d clarify whether the goal is retention, monetization, or new user growth. I’d likely focus on “confidence” in
+        real-world trips: better multimodal navigation and fewer surprises. A high-impact area is making public transit and
+        walking safer and more predictable with real-time crowding, accessibility, and safety signals. I’d ship a narrow MVP
+        in a few cities, measure navigation success rate and reduced reroutes, and expand.
+    follow_ups:
+      - What trade-offs exist between privacy and personalization?
+      - How do you choose which cities to launch in?
+
+  - id: ST-012
+    difficulty: hard
+    prompt: Your company is considering an acquisition. How do you evaluate it?
+    what_good_looks_like:
+      - Defines strategic rationale (capability, market, distribution).
+      - Evaluates product/tech fit and integration complexity.
+      - Considers financials and downside risks.
+      - Proposes a post-merger integration plan.
+    answer:
+      structure:
+        - Clarify goals and hypotheses.
+        - Evaluate strategic fit + synergies.
+        - Diligence: product, tech, legal, people.
+        - Integration plan and success metrics.
+      sample: >
+        I’d start with the “why”: are we buying distribution, a capability, or entering a new market? Then validate the
+        hypothesis with customer overlap analysis and a clear synergy model. On product/tech, assess architecture
+        compatibility, data migration, and roadmap conflicts. On people, retention risk for key talent.
+
+        The integration plan should specify whether we keep products separate, bundle, or fully merge, with a 90-day plan and
+        metrics like retention of acquired customers, cross-sell rate, and delivery of key synergies.
+    follow_ups:
+      - What are red flags that stop the deal?
+      - How do you prevent integration from derailing core roadmap?
+

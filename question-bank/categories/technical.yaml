@@ -1,0 +1,291 @@
+version: 1
+category: Technical
+questions:
+  - id: TE-001
+    difficulty: easy
+    prompt: Explain what an API is to a non-technical stakeholder.
+    what_good_looks_like:
+      - Uses a simple analogy and a concrete example.
+      - Explains request/response and contracts.
+      - Mentions reliability/versioning at a high level.
+      - Avoids jargon.
+    answer:
+      structure:
+        - Define API as an agreement/contract.
+        - Explain request/response.
+        - Give example and why it matters.
+      sample: >
+        An API is a contract that lets two systems talk to each other in a predictable way. One system asks for something
+        (a request), and the other returns the result (a response). For example, when our app shows your order status, it
+        calls an API to ask “what is the status of order 123?” and gets back “shipped, arriving tomorrow”. APIs matter
+        because they let teams build independently as long as they agree on the interface.
+    follow_ups:
+      - What happens if an API changes?
+      - What does “versioning” mean?
+
+  - id: TE-002
+    difficulty: medium
+    prompt: What’s the difference between REST and GraphQL? When would you choose one?
+    what_good_looks_like:
+      - Explains core difference (resource endpoints vs query schema).
+      - Discusses trade-offs (over/under-fetching, caching, complexity).
+      - Connects choice to product needs and org maturity.
+      - Mentions observability and governance.
+    answer:
+      structure:
+        - Define REST and GraphQL.
+        - Compare trade-offs.
+        - Provide decision criteria with an example.
+      sample: >
+        REST exposes resources via endpoints (e.g., /users/1) and you typically get a fixed response shape. GraphQL exposes
+        a schema and lets clients ask for exactly the fields they need. GraphQL can reduce over/under-fetching, which helps
+        mobile performance, but it adds complexity: schema governance, query cost controls, and caching can be harder.
+
+        I’d choose REST for simpler systems where standard HTTP caching and clear service boundaries matter. I’d consider
+        GraphQL when many clients need different shapes, the product iterates quickly, and we can invest in schema tooling,
+        performance guardrails, and observability.
+    follow_ups:
+      - How do you prevent expensive GraphQL queries?
+      - What are the caching implications?
+
+  - id: TE-003
+    difficulty: medium
+    prompt: Explain latency and why it matters to user experience.
+    what_good_looks_like:
+      - Defines latency with examples (p95/p99).
+      - Connects to UX outcomes (conversion, trust, rage clicks).
+      - Mentions where latency comes from (network, backend, rendering).
+      - Suggests monitoring and budgets.
+    answer:
+      structure:
+        - Define latency and distribution.
+        - Explain user impact and business impact.
+        - Discuss sources and mitigation at a high level.
+      sample: >
+        Latency is the time between a user action and the system response. It’s not just average latency—tail latency (p95,
+        p99) matters because users remember slow experiences. High latency reduces conversion, increases abandonment, and
+        erodes trust.
+
+        It can come from network conditions, backend processing, database queries, or client rendering. As a PM, I’d set
+        performance budgets, monitor p95/p99, and prioritize improvements that affect the most common and most valuable flows.
+    follow_ups:
+      - What’s the difference between throughput and latency?
+      - How do you pick performance budgets?
+
+  - id: TE-004
+    difficulty: hard
+    prompt: Design a URL shortener (like bit.ly). What are the key technical considerations?
+    what_good_looks_like:
+      - Clarifies requirements (scale, custom domains, analytics).
+      - Discusses uniqueness, collisions, and ID generation.
+      - Addresses redirects, latency, and caching.
+      - Mentions abuse prevention and observability.
+    answer:
+      structure:
+        - Clarify product requirements and scale.
+        - Propose high-level architecture.
+        - Key trade-offs (ID generation, storage, caching).
+        - Abuse and monitoring.
+      sample: >
+        Requirements: create short links, redirect quickly, support custom aliases, and provide click analytics. At scale,
+        the redirect path must be extremely low-latency. I’d store a mapping from short code → long URL in a key-value store,
+        cache hot keys at the edge/CDN, and ensure redirects are safe (open redirect abuse).
+
+        For code generation, use a unique ID (like a sequence) encoded in base62; handle custom aliases with a uniqueness
+        check. Analytics can be written asynchronously to avoid slowing redirects. Add rate limits and abuse detection for
+        malicious links.
+    follow_ups:
+      - How do you handle link expiration?
+      - How do you prevent enumeration attacks?
+
+  - id: TE-005
+    difficulty: medium
+    prompt: What is caching? Where would you use it and what are the risks?
+    what_good_looks_like:
+      - Defines caching and the key idea of trading freshness for speed.
+      - Identifies common layers (CDN, app, DB).
+      - Mentions cache invalidation and consistency risks.
+      - Provides practical examples.
+    answer:
+      structure:
+        - Define cache and why it’s used.
+        - Where to apply it.
+        - Risks and mitigations.
+      sample: >
+        Caching stores frequently accessed data closer to where it’s needed so we can serve it faster and reduce load. You
+        can cache at the CDN/edge, in the application, or in a dedicated cache like Redis. The trade-off is freshness and
+        complexity—cache invalidation is hard, and stale data can cause confusing user experiences.
+
+        I’d use caching for read-heavy, relatively stable data (product catalogs, profile data) with clear TTLs and
+        invalidation strategies, and I’d avoid caching highly dynamic or sensitive data without careful controls.
+    follow_ups:
+      - What’s the difference between write-through and write-back?
+      - How do you decide TTL?
+
+  - id: TE-006
+    difficulty: hard
+    prompt: Explain the CAP theorem and why a PM should care.
+    what_good_looks_like:
+      - Defines Consistency, Availability, and Partition tolerance.
+      - Explains trade-offs in real product terms (stale data vs downtime).
+      - Connects to user-facing decisions (payments, messaging).
+      - Avoids over-technical detail.
+    answer:
+      structure:
+        - Define CAP in plain language.
+        - Give product examples of trade-offs.
+        - Explain implications for requirements.
+      sample: >
+        CAP says that in a distributed system, when there’s a network partition, you must choose between consistency
+        (everyone sees the same data) and availability (the system keeps responding). Partition tolerance is effectively
+        required at scale because networks fail.
+
+        PM implication: you must decide what users prefer in failure modes. For a payments ledger, you’d prefer consistency
+        (don’t show incorrect balances), even if some actions are temporarily unavailable. For a social feed, availability
+        might matter more, and occasional staleness is acceptable. Clear requirements guide architecture and UX fallback.
+    follow_ups:
+      - Give an example of acceptable eventual consistency.
+      - How do you communicate degraded modes to users?
+
+  - id: TE-007
+    difficulty: medium
+    prompt: What’s the difference between authentication and authorization?
+    what_good_looks_like:
+      - Defines both with simple examples.
+      - Connects to common mechanisms (SSO, roles).
+      - Highlights typical failure modes.
+      - Mentions least privilege.
+    answer:
+      structure:
+        - Define authentication (who you are).
+        - Define authorization (what you can do).
+        - Give examples and implications.
+      sample: >
+        Authentication is proving who you are (logging in). Authorization is what you’re allowed to do after you’re logged in
+        (permissions). For example, SSO authenticates an employee; role-based access control authorizes whether they can view
+        billing or change settings. Least privilege reduces security risk by defaulting to minimal access.
+    follow_ups:
+      - What is SSO and why do enterprises want it?
+      - How do you design roles vs custom permissions?
+
+  - id: TE-008
+    difficulty: hard
+    prompt: You need to build “real-time collaboration” in a document editor. What’s your approach?
+    what_good_looks_like:
+      - Clarifies scope (concurrent edits, comments, presence).
+      - Mentions CRDT/OT at a conceptual level and trade-offs.
+      - Addresses conflicts, offline edits, and latency.
+      - Includes monitoring and rollout strategy.
+    answer:
+      structure:
+        - Clarify requirements and constraints.
+        - Choose consistency model and algorithmic approach at high level.
+        - Address offline, conflicts, permissions.
+        - Metrics and rollout.
+      sample: >
+        I’d clarify whether we need true concurrent character-level editing or simpler “section locks”. For full real-time
+        collaboration, we need a consistency mechanism like OT or CRDT so multiple users can edit and converge on the same
+        document state. Trade-offs include complexity, offline support, and performance on large docs.
+
+        I’d start with an MVP: presence + comments + near-real-time edits for small docs, then scale. Offline edits require
+        conflict resolution and clear UX for merges. Metrics: sync latency, conflict rate, and perceived reliability, with a
+        gradual rollout and strong monitoring.
+    follow_ups:
+      - When would section locking be better than CRDT/OT?
+      - How do you handle permissions mid-session?
+
+  - id: TE-009
+    difficulty: medium
+    prompt: What is rate limiting, and why might you apply it to an API?
+    what_good_looks_like:
+      - Explains protection of system and fairness.
+      - Mentions abuse/spikes and multi-tenant isolation.
+      - Discusses user-facing behavior (429s, retry-after).
+      - Connects to product plans and pricing.
+    answer:
+      structure:
+        - Define rate limiting.
+        - Why it’s needed.
+        - How to design it from a product perspective.
+      sample: >
+        Rate limiting caps how many requests a client can make in a time window. It protects the system from abuse or
+        accidental spikes and ensures fair usage across customers. Product-wise, you might align limits with pricing tiers,
+        provide clear error responses (429 with Retry-After), and offer dashboards so developers can monitor usage.
+    follow_ups:
+      - How do you handle bursty traffic?
+      - How do rate limits interact with enterprise SLAs?
+
+  - id: TE-010
+    difficulty: hard
+    prompt: How would you approach building an AI feature that answers questions from a company knowledge base?
+    what_good_looks_like:
+      - Chooses a retrieval approach (RAG) and explains why.
+      - Addresses evaluation, hallucination mitigation, and citations.
+      - Considers permissions and data security.
+      - Discusses latency/cost trade-offs and UX.
+    answer:
+      structure:
+        - Clarify use cases and permissions model.
+        - Approach: retrieval + generation with grounding.
+        - Evaluation and monitoring plan.
+        - Rollout and guardrails.
+      sample: >
+        I’d build it as a retrieval-augmented system: first retrieve relevant documents the user is allowed to access, then
+        generate an answer grounded in those sources with citations. This reduces hallucinations and improves trust.
+
+        Key is permissions: retrieval must respect ACLs. Evaluation: create a test set of real questions with expected
+        answers, measure answer correctness and citation support, and monitor production with user feedback and fallback to
+        “I can’t find this”. UX: show sources and allow users to open the original doc; keep latency acceptable by caching
+        embeddings and streaming partial answers.
+    follow_ups:
+      - How do you prevent prompt injection?
+      - What’s your plan if the model is confidently wrong?
+
+  - id: TE-011
+    difficulty: medium
+    prompt: Explain the difference between a SQL and NoSQL database and when you’d choose each.
+    what_good_looks_like:
+      - Explains structured schemas and transactions vs flexible schemas.
+      - Discusses consistency and query patterns.
+      - Uses a concrete example tied to product needs.
+      - Avoids blanket statements.
+    answer:
+      structure:
+        - Define SQL vs NoSQL at high level.
+        - Discuss trade-offs.
+        - Provide decision criteria.
+      sample: >
+        SQL databases are relational with a structured schema and strong transactional guarantees, great for consistent
+        records like orders and payments. NoSQL is a broad category optimized for certain patterns—key-value for fast reads,
+        document stores for flexible data, or wide-column for large-scale writes.
+
+        I’d choose based on access patterns and consistency needs: payments and inventory lean SQL; a high-throughput event
+        log might use a NoSQL store. Often modern systems use both.
+    follow_ups:
+      - What does “transaction” mean in product terms?
+      - What are examples of eventual consistency issues?
+
+  - id: TE-012
+    difficulty: hard
+    prompt: How would you design an observability dashboard for a critical user flow (e.g., checkout)?
+    what_good_looks_like:
+      - Defines key SLIs/SLOs and user-impact metrics.
+      - Breaks down by segments (geo, device, version, payment method).
+      - Includes alerting thresholds and runbooks.
+      - Connects to product decisions (rollback, incident comms).
+    answer:
+      structure:
+        - Identify flow steps and key metrics per step.
+        - Define SLOs and alerting.
+        - Segment views and root-cause pointers.
+        - Operational playbook.
+      sample: >
+        I’d map checkout steps: cart → address → payment → confirmation. For each, track conversion, error rate, p95 latency,
+        and drop-off. Define an SLO like “payment success rate ≥ 99.5%” and alert on breaches with clear severity levels.
+
+        The dashboard should slice by geo, app version, device, and payment method so we can quickly localize issues. Include
+        links to logs/traces and a runbook: rollback steps, vendor contacts, and customer comms templates.
+    follow_ups:
+      - How do you set alert thresholds?
+      - What’s the difference between SLI and SLO?
+

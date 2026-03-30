@@ -1,0 +1,282 @@
+version: 1
+category: Execution
+questions:
+  - id: EX-001
+    difficulty: medium
+    prompt: You have 6 weeks and 4 engineers. What do you build next, and how do you plan delivery?
+    what_good_looks_like:
+      - Clarifies goals, constraints, and definition of success.
+      - Breaks work into milestones and de-risks early.
+      - Uses prioritization framework and explicit trade-offs.
+      - Includes stakeholder communication and iteration plan.
+    answer:
+      structure:
+        - Clarify objective and constraints.
+        - Identify highest-leverage outcome.
+        - Plan milestones: discovery, build, QA, launch.
+        - Risks and mitigation.
+      sample: >
+        I’d start by clarifying the goal: are we optimizing activation, retention, revenue, or reliability? With 6 weeks and
+        4 engineers, the plan should bias toward a focused scope with early risk reduction.
+
+        I’d define a single measurable outcome, pick the highest-impact initiative, and break it into milestones: week 1
+        discovery + spec + designs, week 2 build the critical path behind a feature flag, week 3 instrumentation + edge cases,
+        week 4 beta rollout, week 5 hardening + performance, week 6 full launch + monitoring. I’d communicate scope and
+        trade-offs upfront and keep a weekly checkpoint with stakeholders.
+    follow_ups:
+      - How do you handle mid-sprint scope changes?
+      - What do you do if you discover a major technical dependency?
+
+  - id: EX-002
+    difficulty: hard
+    prompt: "Prioritize these: improve reliability, launch a big new feature, reduce tech debt, and expand to a new market."
+    what_good_looks_like:
+      - Requests context (current metrics, strategy, customer pain).
+      - Uses a structured prioritization approach (RICE/ROI/risk).
+      - Explains sequencing and dependencies.
+      - Defines how to align stakeholders.
+    answer:
+      structure:
+        - Clarify strategic objective and constraints.
+        - Evaluate each option on impact, risk, time, and alignment.
+        - Propose sequencing and rationale.
+      sample: >
+        I’d first clarify: what is our biggest constraint—growth, retention, or trust? If reliability is harming core usage
+        or contracts, it becomes a prerequisite; shipping features into an unstable system often backfires. I’d score each
+        option on impact to north-star, urgency (risk), effort, and optionality.
+
+        A common sequence is: stabilize reliability to protect trust and revenue, then ship a high-impact feature, while
+        allocating a fixed capacity slice to tech debt continuously. Market expansion comes last unless it’s the strategic
+        priority and we have product-market fit and operational readiness.
+    follow_ups:
+      - How do you quantify “tech debt” impact?
+      - What if leadership demands market expansion now?
+
+  - id: EX-003
+    difficulty: medium
+    prompt: How do you write a PRD? What sections matter most?
+    what_good_looks_like:
+      - Focuses on problem, goals, constraints, and success metrics.
+      - Includes non-goals, trade-offs, and risks.
+      - Specifies requirements at the right level (not over-prescriptive).
+      - Aligns cross-functional teams.
+    answer:
+      structure:
+        - Problem statement and context.
+        - Goals/non-goals and success metrics.
+        - User journeys and requirements.
+        - Risks, dependencies, rollout, and measurement.
+      sample: >
+        My PRDs start with a crisp problem statement, who it affects, and why now. Then goals and non-goals with a metric
+        tree so we agree on success. I include key user journeys, requirements that define behavior (not implementation),
+        and open questions. I also call out risks, dependencies, rollout plan (beta/flag), and instrumentation needs. The
+        goal is alignment and decision-making, not a novel.
+    follow_ups:
+      - How do you handle ambiguity in requirements?
+      - What changes for a platform PRD?
+
+  - id: EX-004
+    difficulty: hard
+    prompt: A key stakeholder wants a roadmap commitment you can’t confidently make. What do you do?
+    what_good_looks_like:
+      - Demonstrates transparency and expectation management.
+      - Offers ranges, scenarios, and milestones.
+      - Aligns on what’s required for confidence (discovery, spikes).
+      - Maintains trust while avoiding false certainty.
+    answer:
+      structure:
+        - Acknowledge request and underlying need.
+        - Explain uncertainty drivers.
+        - Offer plan: milestones + decision points.
+        - Communicate updates cadence.
+      sample: >
+        I’d first understand why they need the commitment—customer promise, marketing launch, or budget. Then I’d explain
+        what’s uncertain (dependencies, technical unknowns) and propose a plan to increase confidence quickly: a 1–2 week
+        spike, design validation, and a milestone-based timeline with ranges. I’d commit to the next decision point and a
+        regular update cadence rather than a date I can’t stand behind.
+    follow_ups:
+      - How do you handle a customer escalation?
+      - When do you say “no” outright?
+
+  - id: EX-005
+    difficulty: medium
+    prompt: How do you decide MVP scope?
+    what_good_looks_like:
+      - Starts from core user job and riskiest assumptions.
+      - Defines the minimum end-to-end experience.
+      - Avoids building “nice-to-haves” before validation.
+      - Defines measurable learning goals.
+    answer:
+      structure:
+        - Define job and success.
+        - Identify hypotheses and biggest risks.
+        - Select minimal features to test hypotheses.
+        - Instrumentation and learning plan.
+      sample: >
+        MVP is the smallest end-to-end experience that tests the riskiest assumptions. I start with the user job, define what
+        “success” means, then list hypotheses (value, usability, feasibility). I include only features necessary to deliver
+        the promise and measure outcomes, and I keep everything else as explicit non-goals. If we can’t learn from it, it’s
+        not MVP.
+    follow_ups:
+      - How do you handle execs who want more scope?
+      - What if your MVP fails—what do you do next?
+
+  - id: EX-006
+    difficulty: hard
+    prompt: Walk me through how you’d launch a risky feature safely.
+    what_good_looks_like:
+      - Uses progressive delivery (flags, canaries, phased rollout).
+      - Defines guardrails and rollback criteria.
+      - Plans internal testing, beta cohorts, and comms.
+      - Includes monitoring and post-launch iteration.
+    answer:
+      structure:
+        - Define risk types (perf, privacy, revenue).
+        - Pre-launch validation (tests, dogfood, beta).
+        - Rollout phases and kill switches.
+        - Post-launch monitoring and iteration.
+      sample: >
+        I’d identify the primary risks and set guardrail metrics (e.g., error rate, latency, refunds, complaints). Ship behind
+        a feature flag, dogfood internally, then launch to a small beta cohort. Roll out gradually (1%, 5%, 25%, 100%) while
+        monitoring dashboards and alerts. Predefine rollback criteria and ensure kill switches work. Post-launch, compare
+        cohorts and iterate based on data and qualitative feedback.
+    follow_ups:
+      - What if guardrails move slightly but primary metric improves?
+      - How do you pick beta cohorts?
+
+  - id: EX-007
+    difficulty: medium
+    prompt: How do you run an effective sprint planning / execution cadence as a PM?
+    what_good_looks_like:
+      - Clarifies team process and ownership boundaries.
+      - Ensures readiness (clear priorities, acceptance criteria).
+      - Reduces churn via pre-sprint alignment.
+      - Tracks outcomes, not just outputs.
+    answer:
+      structure:
+        - Pre-sprint: clarify priorities and scope.
+        - During sprint: unblock, manage changes, communicate.
+        - Post-sprint: review, learn, and adjust.
+      sample: >
+        Before sprint planning, I ensure priorities are clear, stories have acceptance criteria, and dependencies are
+        resolved. During the sprint, I stay close to the team to unblock quickly and protect focus—scope changes go through a
+        clear decision rule. In review, I focus on outcomes and learnings, not just completion, and I update stakeholders on
+        progress and risks.
+    follow_ups:
+      - How do you handle interrupts?
+      - What does “good refinement” look like?
+
+  - id: EX-008
+    difficulty: hard
+    prompt: Your roadmap is consistently slipping. Diagnose why and what you change.
+    what_good_looks_like:
+      - Identifies root causes (overcommitment, unclear scope, dependencies, quality).
+      - Uses data (estimate accuracy, rework rate, interrupts).
+      - Proposes process changes and governance.
+      - Aligns expectations and improves predictability.
+    answer:
+      structure:
+        - Diagnose sources of slip with examples/data.
+        - Propose targeted changes (scoping, discovery, planning).
+        - Implement cadence and measure improvement.
+      sample: >
+        I’d diagnose with data: planned vs delivered per sprint, rework rate, interrupt volume, and dependency wait times.
+        Common causes include overcommitment, unclear requirements, hidden tech work, and unstable priorities.
+
+        Fixes: enforce a discovery/refinement gate for large items, break work into smaller milestones, reserve capacity for
+        interrupts and tech debt, and make dependencies explicit with owners. I’d also move from date commitments to
+        milestone-based plans and track predictability as a KPI.
+    follow_ups:
+      - How do you handle a team that underestimates consistently?
+      - How do you push back on stakeholders?
+
+  - id: EX-009
+    difficulty: medium
+    prompt: How do you handle trade-offs between speed and quality?
+    what_good_looks_like:
+      - Frames quality as risk management and user trust.
+      - Differentiates reversible vs irreversible decisions.
+      - Uses guardrails, staged rollouts, and debt paydown.
+      - Communicates trade-offs transparently.
+    answer:
+      structure:
+        - Clarify context and acceptable risk.
+        - Decide with reversible/irreversible framework.
+        - Use mitigations (flags, monitoring, QA).
+      sample: >
+        I treat it as risk management. For reversible decisions (UI tweaks), I’ll bias to speed with guardrails and quick
+        iteration. For irreversible decisions (data migrations, payments), I bias to quality with more testing and staged
+        rollout. I make trade-offs explicit, document risks, and ensure we pay down debt created by shortcuts.
+    follow_ups:
+      - What’s an example of an irreversible decision you’ve made?
+      - How do you negotiate quality with stakeholders?
+
+  - id: EX-010
+    difficulty: hard
+    prompt: A metric you care about is improving, but customer complaints are rising. What do you do?
+    what_good_looks_like:
+      - Investigates segment-level impact and qualitative signals.
+      - Checks for metric gaming or misalignment.
+      - Defines guardrails and updates metric tree.
+      - Proposes experiments and fixes.
+    answer:
+      structure:
+        - Validate and segment both signals.
+        - Hypothesize causes.
+        - Take action and adjust measurement.
+      sample: >
+        I’d segment: which customers are complaining, what’s the complaint theme, and whether it’s concentrated in a cohort.
+        The metric may be improving due to a short-term optimization that harms trust or long-term value. I’d correlate
+        complaint spikes with releases and run deeper analysis on user journeys.
+
+        Then I’d add or strengthen guardrails in the metric tree, and if needed pause or roll back the change while we test a
+        revised approach. The goal is to optimize for sustained value, not just one number.
+    follow_ups:
+      - How do you decide to rollback?
+      - What guardrails would you add?
+
+  - id: EX-011
+    difficulty: medium
+    prompt: How do you work with design to get from problem to solution effectively?
+    what_good_looks_like:
+      - Aligns on problem, constraints, and success metrics early.
+      - Encourages divergent exploration then convergent decisions.
+      - Uses user research and prototypes to reduce risk.
+      - Maintains shared ownership without micromanaging.
+    answer:
+      structure:
+        - Align on problem and outcomes.
+        - Explore options and trade-offs.
+        - Validate with users and data.
+        - Decide and execute.
+      sample: >
+        I align with design on the problem statement, constraints, and success metrics first. Then we explore multiple
+        solution directions quickly with prototypes, test with a few users, and converge using explicit criteria. I aim for
+        shared ownership: design leads interaction decisions, I ensure we’re solving the right problem and instrumenting for
+        learning.
+    follow_ups:
+      - What do you do when design wants more polish time?
+      - How do you handle conflicting feedback?
+
+  - id: EX-012
+    difficulty: hard
+    prompt: What does great stakeholder communication look like during execution?
+    what_good_looks_like:
+      - Establishes cadence and single source of truth.
+      - Communicates risks early and proposes options.
+      - Uses clear status (progress, blockers, decisions needed).
+      - Tailors message to audience.
+    answer:
+      structure:
+        - Set expectations early (cadence, artifacts).
+        - Share progress and risks.
+        - Ask for decisions when needed.
+      sample: >
+        Great communication is proactive and specific. I set a weekly cadence and a single source of truth (one pager or
+        tracker) that includes goals, current status, risks, and decisions needed. I surface risks early with options, not
+        surprises. I tailor detail: execs get outcomes and trade-offs; partners get timelines and dependencies; the team gets
+        day-to-day clarity.
+    follow_ups:
+      - How do you handle stakeholders who don’t read updates?
+      - How do you communicate bad news?
+
