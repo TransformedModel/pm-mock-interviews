@@ -1,12 +1,10 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import yaml from "js-yaml";
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-import type { CategoryFile, CategoryKey, Difficulty, Question } from "@/lib/types";
-import { CATEGORY_FILES, CATEGORY_LABELS } from "@/lib/types";
-import { invalidateQuestionBankCache } from "@/lib/questionBank.server";
+import type { CategoryKey, Difficulty } from "@/lib/types";
+import { CATEGORY_LABELS } from "@/lib/types";
 
 type SuggestRequest = {
   category: CategoryKey;
@@ -15,41 +13,12 @@ type SuggestRequest = {
   modelAnswer: string;
 };
 
-function categoriesDir(): string {
-  return path.resolve(process.cwd(), "..", "question-bank", "categories");
-}
-
 function jsonError(message: string, status = 400) {
   return NextResponse.json({ error: message }, { status });
 }
 
-function idPrefix(category: CategoryKey) {
-  switch (category) {
-    case "product_design":
-      return "PD";
-    case "estimation_analytical":
-      return "EA";
-    case "behavioral":
-      return "BE";
-    case "strategy":
-      return "ST";
-    case "technical":
-      return "TE";
-    case "execution":
-      return "EX";
-  }
-}
-
-function nextId(existing: Question[], prefix: string) {
-  const re = new RegExp(`^${prefix}-(\\d+)$`);
-  let max = 0;
-  for (const q of existing) {
-    const m = re.exec(q.id);
-    if (!m) continue;
-    const n = Number(m[1]);
-    if (Number.isFinite(n)) max = Math.max(max, n);
-  }
-  return `${prefix}-${String(max + 1).padStart(3, "0")}`;
+function suggestionsDir(): string {
+  return path.resolve(process.cwd(), "..", "question-bank", "suggestions");
 }
 
 async function tryGenerateRubricAndFollowUps(input: {
@@ -126,67 +95,60 @@ export async function POST(req: Request) {
   }
 
   const category = body?.category;
-  if (!category || !(category in CATEGORY_FILES)) return jsonError("Invalid category.");
+  if (!category || !(category in CATEGORY_LABELS)) return jsonError("Invalid category.");
   if (!body.prompt?.trim()) return jsonError("Missing prompt.");
   if (!body.modelAnswer?.trim()) return jsonError("Missing modelAnswer.");
-
-  // Note: In many hosted environments the filesystem is read-only. This feature targets local usage.
-  const filePath = path.join(categoriesDir(), CATEGORY_FILES[category]);
-
   try {
-    const raw = await fs.readFile(filePath, "utf8");
-    const parsed = yaml.load(raw) as CategoryFile;
-    if (!parsed || !Array.isArray(parsed.questions)) {
-      return jsonError("Category file is invalid on disk.", 500);
-    }
+    // Ensure suggestions directory exists
+    const dir = suggestionsDir();
+    await fs.mkdir(dir, { recursive: true });
 
-    const prefix = idPrefix(category);
-    const id = nextId(parsed.questions, prefix);
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const fileName = `${category}-${timestamp}.md`;
+    const filePath = path.join(dir, fileName);
 
     const enrich = await tryGenerateRubricAndFollowUps({
       prompt: body.prompt.trim(),
       modelAnswer: body.modelAnswer.trim(),
     });
 
-    const newQuestion: Question = {
-      id,
-      difficulty: body.difficulty ?? "medium",
-      prompt: body.prompt.trim(),
-      what_good_looks_like:
-        enrich?.what_good_looks_like ?? [
-          "Clarifies scope, users, and constraints.",
-          "Uses a clear structure and makes assumptions explicit.",
-          "Explains trade-offs and defines success metrics.",
-        ],
-      answer: {
-        structure:
-          enrich?.structure ?? [
-            "Clarify the goal, users, and constraints.",
-            "Propose a structured approach and key decisions.",
-            "Discuss trade-offs, risks, and success metrics.",
-          ],
-        sample: body.modelAnswer.trim(),
-      },
-      follow_ups:
-        enrich?.follow_ups ?? [
-          "What assumptions are you making?",
-          "What trade-offs did you choose and why?",
-          "How would you measure success?",
-        ],
-    };
+    const lines: string[] = [
+      `# Suggested question for ${CATEGORY_LABELS[category]} (${category})`,
+      "",
+      `- Difficulty: ${body.difficulty ?? "medium"}`,
+      `- Submitted at: ${new Date().toISOString()}`,
+      "",
+      "## Prompt",
+      "",
+      body.prompt.trim(),
+      "",
+      "## Model answer",
+      "",
+      body.modelAnswer.trim(),
+    ];
 
-    parsed.questions.push(newQuestion);
+    if (enrich) {
+      lines.push(
+        "",
+        "## Auto-derived rubric (draft)",
+        "",
+        "### What good looks like",
+        "",
+        ...enrich.what_good_looks_like.map((b) => `- ${b}`),
+        "",
+        "### Suggested structure",
+        "",
+        ...enrich.structure.map((s) => `- ${s}`),
+        "",
+        "### Follow-up questions",
+        "",
+        ...enrich.follow_ups.map((q) => `- ${q}`),
+      );
+    }
 
-    const nextYaml = yaml.dump(parsed, {
-      lineWidth: 100,
-      noRefs: true,
-      quotingType: '"',
-    });
-    await fs.writeFile(filePath, nextYaml, "utf8");
+    await fs.writeFile(filePath, lines.join("\n"), "utf8");
 
-    invalidateQuestionBankCache();
-
-    return NextResponse.json({ id, category: CATEGORY_LABELS[category] });
+    return NextResponse.json({ id: fileName, category: CATEGORY_LABELS[category] });
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Unknown error";
     return jsonError(msg, 500);

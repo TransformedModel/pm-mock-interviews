@@ -13,7 +13,7 @@ questions:
       structure:
         - Clarify users, use-cases, constraints, and definition of “better 1:1s”.
         - List pain points and choose top 1–2 to solve first.
-        - Propose MVP: workflow, key screens, and data model.
+        - "Propose MVP: workflow, key screens, and data model."
         - Risks and mitigations (privacy, adoption, manager habits).
         - Metrics + experiment plan.
       sample: >
@@ -269,7 +269,7 @@ questions:
       structure:
         - Clarify who and what “fair” means.
         - Identify top 3 workflows: add expense, assign shares, settle up.
-        - Propose MVP and edge case handling.
+        - "Propose MVP and edge case handling."
         - Metrics and iteration plan.
       sample: >
         “Fair” depends on the group: equal split for roommates, income-weighted for couples, or

@@ -1,7 +1,6 @@
 import type { Question } from "@/lib/types";
 
 export type FeedbackResult = {
-  overallScore: number;
   strengths: string[];
   gaps: string[];
   suggestedRewrite: string;
@@ -18,14 +17,7 @@ export function FeedbackPanel({
 }) {
   return (
     <section className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
-      <div className="flex items-center justify-between gap-3">
-        <h3 className="text-base font-semibold text-zinc-950">Feedback</h3>
-        {feedback ? (
-          <div className="text-sm text-zinc-700">
-            Score: <span className="font-semibold text-zinc-950">{feedback.overallScore}/10</span>
-          </div>
-        ) : null}
-      </div>
+      <h3 className="text-base font-semibold text-zinc-950">Feedback</h3>
 
       {!feedback ? (
         <p className="mt-2 text-sm text-zinc-600">

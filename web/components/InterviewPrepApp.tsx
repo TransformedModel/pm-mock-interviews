@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Confetti from "react-confetti";
 
 import type { CategoryKey, Question, QuestionBank } from "@/lib/types";
 import { CATEGORY_LABELS } from "@/lib/types";
@@ -60,7 +61,6 @@ export function InterviewPrepApp({ bank, initialCategory, initialQuestion }: Pro
     }
 
     setIsSubmitting(true);
-    setFeedback(null);
 
     try {
       const res = await fetch("/api/feedback", {
@@ -99,7 +99,14 @@ export function InterviewPrepApp({ bank, initialCategory, initialQuestion }: Pro
   }
 
   return (
-    <div className="min-h-full bg-zinc-50">
+    <div className="relative min-h-full bg-zinc-50">
+      {feedback ? (
+        <Confetti
+          recycle={false}
+          numberOfPieces={220}
+          className="pointer-events-none fixed inset-0"
+        />
+      ) : null}
       <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6">
         <header className="flex flex-col gap-3">
           <div className="flex flex-wrap items-end justify-between gap-4">
@@ -191,8 +198,16 @@ export function InterviewPrepApp({ bank, initialCategory, initialQuestion }: Pro
         </main>
 
         <footer className="mt-10 text-xs text-zinc-500">
-          Your answer is analyzed on submit. If you haven’t set `GEMINI_API_KEY`, you’ll see an error until you add it to
-          `pm-mock-interviews/web/.env.local`.
+          Made by{" "}
+          <a
+            href="https://github.com/TransformedModel"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-zinc-700 hover:text-zinc-900 underline underline-offset-2"
+          >
+            Niharika Kohli
+          </a>
+          .
         </footer>
       </div>
     </div>

@@ -11,7 +11,6 @@ type FeedbackRequest = {
 };
 
 type FeedbackResponse = {
-  overallScore: number;
   strengths: string[];
   gaps: string[];
   suggestedRewrite: string;
@@ -70,9 +69,8 @@ async function generateFeedback(body: FeedbackRequest): Promise<FeedbackResponse
     "Candidate answer:",
     body.userAnswer,
     "",
-    "Return JSON with this exact shape:",
+    "Return JSON with this exact shape (no extra fields):",
     "{",
-    '  "overallScore": 0,',
     '  "strengths": ["..."],',
     '  "gaps": ["..."],',
     '  "suggestedRewrite": "...",',
