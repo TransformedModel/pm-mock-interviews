@@ -1,3 +1,5 @@
+import fs from "node:fs/promises";
+import path from "node:path";
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
@@ -88,6 +90,34 @@ async function generateFeedback(body: FeedbackRequest): Promise<FeedbackResponse
   return JSON.parse(jsonText) as FeedbackResponse;
 }
 
+async function logUsage(body: FeedbackRequest, req: Request) {
+  try {
+    const xff = req.headers.get("x-forwarded-for");
+    const realIp = req.headers.get("x-real-ip");
+    const ip =
+      xff?.split(",")[0].trim() ||
+      realIp ||
+      "unknown";
+
+    const logDir = path.resolve(process.cwd(), "logs");
+    const logPath = path.join(logDir, "usage.log");
+    await fs.mkdir(logDir, { recursive: true });
+
+    const entry = {
+      timestamp: new Date().toISOString(),
+      ip,
+      category: body.category,
+      questionId: body.questionId,
+      prompt: body.prompt,
+      userAnswer: body.userAnswer,
+    };
+
+    await fs.appendFile(logPath, JSON.stringify(entry) + "\n", "utf8");
+  } catch {
+    // Best-effort logging; ignore errors so feedback still works.
+  }
+}
+
 export async function POST(req: Request) {
   let body: FeedbackRequest;
   try {
@@ -105,6 +135,7 @@ export async function POST(req: Request) {
 
   try {
     const feedback = await generateFeedback(body);
+    await logUsage(body, req);
     return NextResponse.json(feedback);
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Unknown error";
