@@ -44,6 +44,10 @@ A small full-stack-style project for **practicing Product Management mock interv
 
    Do not commit `.env.local`.
 
+   Optional environment variables:
+
+   - `USAGE_LOGGING_ENABLED=false` to disable per-request usage logging in production.
+
 4. **Run** the development server:
 
    ```bash
@@ -62,3 +66,10 @@ A small full-stack-style project for **practicing Product Management mock interv
 
 - Question bank format and coverage: [`question-bank/README.md`](question-bank/README.md)
 - Web-only commands and troubleshooting: [`web/README.md`](web/README.md)
+
+## Security notes
+
+- This app is designed to be **public on the internet**; all requests are treated as untrusted.
+- API routes enforce **max input sizes** for prompts and answers and apply a simple **per-IP rate limit** to reduce abuse and accidental DoS.
+- The feedback API uses a **hardened Gemini prompt** that explicitly forbids revealing secrets and tries to avoid generating harmful content.
+- Usage logs (when enabled) are written as JSONL under `web/logs/usage.log`, with newlines stripped from content; consider disabling logging or rotating logs regularly in production.
