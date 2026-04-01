@@ -9,6 +9,15 @@ export type FeedbackResult = {
   rubricCoverage: { bullet: string; covered: boolean; notes?: string }[];
 };
 
+function decodeHtmlEntities(input: string): string {
+  return input
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+}
+
 export function FeedbackPanel({
   question,
   feedback,
@@ -72,12 +81,15 @@ export function FeedbackPanel({
               className="rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-sm text-zinc-800 whitespace-pre-wrap"
               // We allow only very simple HTML from the model for emphasis.
               dangerouslySetInnerHTML={{
-                __html: sanitizeHtml(feedback.suggestedRewrite, {
-                  allowedTags: ["strong", "em", "b", "i", "br", "p", "span"],
-                  allowedAttributes: {
-                    span: ["style"],
+                __html: sanitizeHtml(
+                  decodeHtmlEntities(feedback.suggestedRewrite),
+                  {
+                    allowedTags: ["strong", "em", "b", "i", "br", "p", "span"],
+                    allowedAttributes: {
+                      span: ["style"],
+                    },
                   },
-                }),
+                ),
               }}
             />
           </div>

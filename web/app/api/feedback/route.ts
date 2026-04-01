@@ -64,6 +64,76 @@ function extractFirstJsonObject(text: string): string | null {
   return text.slice(start, end + 1);
 }
 
+function coerceStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.map((v) => {
+    if (typeof v === "string") return v;
+    try {
+      return JSON.stringify(v);
+    } catch {
+      return String(v);
+    }
+  });
+}
+
+function normalizeFeedback(raw: unknown): FeedbackResponse {
+  const f = raw as Partial<FeedbackResponse> | null | undefined;
+  const strengths = coerceStringArray(f?.strengths ?? []);
+  const gaps = coerceStringArray(f?.gaps ?? []);
+  const followUpQuestions = coerceStringArray(f?.followUpQuestions ?? []);
+
+  const suggestedRewriteValue = (f as any)?.suggestedRewrite;
+  let suggestedRewrite: string;
+  if (typeof suggestedRewriteValue === "string") {
+    suggestedRewrite = suggestedRewriteValue;
+  } else {
+    try {
+      suggestedRewrite = JSON.stringify(suggestedRewriteValue ?? "");
+    } catch {
+      suggestedRewrite = String(suggestedRewriteValue ?? "");
+    }
+  }
+
+  const rubricRaw = Array.isArray(f?.rubricCoverage) ? f!.rubricCoverage! : [];
+  const rubricCoverage = rubricRaw.map((r: any) => {
+    let bullet: string;
+    if (typeof r?.bullet === "string") {
+      bullet = r.bullet;
+    } else {
+      try {
+        bullet = JSON.stringify(r?.bullet ?? "");
+      } catch {
+        bullet = String(r?.bullet ?? "");
+      }
+    }
+
+    let notes: string | undefined;
+    if (typeof r?.notes === "string") {
+      notes = r.notes;
+    } else if (r?.notes != null) {
+      try {
+        notes = JSON.stringify(r.notes);
+      } catch {
+        notes = String(r.notes);
+      }
+    }
+
+    return {
+      bullet,
+      covered: Boolean(r?.covered),
+      notes,
+    };
+  });
+
+  return {
+    strengths,
+    gaps,
+    suggestedRewrite,
+    followUpQuestions,
+    rubricCoverage,
+  };
+}
+
 async function generateFeedback(body: FeedbackRequest): Promise<FeedbackResponse> {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
@@ -124,7 +194,8 @@ async function generateFeedback(body: FeedbackRequest): Promise<FeedbackResponse
   const jsonText = extractFirstJsonObject(text);
   if (!jsonText) throw new Error("Model did not return JSON.");
 
-  return JSON.parse(jsonText) as FeedbackResponse;
+  const parsed = JSON.parse(jsonText) as unknown;
+  return normalizeFeedback(parsed);
 }
 
 async function logUsage(body: FeedbackRequest, req: Request) {
