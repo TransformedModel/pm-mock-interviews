@@ -34,6 +34,10 @@ export function InterviewPrepApp({ bank, initialCategory, initialQuestion }: Pro
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<FeedbackResult | null>(null);
+  const [showReportProblem, setShowReportProblem] = useState(false);
+  const [reportText, setReportText] = useState("");
+  const [isSubmittingReport, setIsSubmittingReport] = useState(false);
+  const [reportStatus, setReportStatus] = useState<"idle" | "success" | "error">("idle");
 
   function changeCategory(next: CategoryKey) {
     setCategory(next);
@@ -50,6 +54,37 @@ export function InterviewPrepApp({ bank, initialCategory, initialQuestion }: Pro
     setAnswer("");
     setFeedback(null);
     setError(null);
+  }
+
+  async function submitReport() {
+    setReportStatus("idle");
+
+    const description = reportText.trim();
+    if (!description) return;
+
+    setIsSubmittingReport(true);
+    try {
+      const res = await fetch("/api/report-problem", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          description,
+          category,
+          questionId: question.id,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Request failed (${res.status})`);
+      }
+
+      setReportText("");
+      setReportStatus("success");
+    } catch {
+      setReportStatus("error");
+    } finally {
+      setIsSubmittingReport(false);
+    }
   }
 
   async function submit() {
@@ -197,17 +232,74 @@ export function InterviewPrepApp({ bank, initialCategory, initialQuestion }: Pro
           </div>
         </main>
 
-        <footer className="mt-10 text-xs text-zinc-500">
-          Made by{" "}
-          <a
-            href="https://github.com/TransformedModel"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-medium text-zinc-700 hover:text-zinc-900 underline underline-offset-2"
-          >
-            Niharika Kohli
-          </a>
-          .
+        <footer className="mt-10 border-t border-zinc-200 pt-4 text-xs text-zinc-500">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div className="space-x-1">
+              <span>
+                Made by{" "}
+                <a
+                  href="https://github.com/TransformedModel"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-zinc-700 hover:text-zinc-900 underline underline-offset-2"
+                >
+                  Niharika Kohli
+                </a>
+                .
+              </span>
+              <span>
+                Built through vibe-coding with the valuable contributions of Cursor, Gemini and Render.
+                This application is purely experimental; please don&apos;t input any sensitive data here.
+                The app is using the Gemini free tier and may run out of credits at any time.
+              </span>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                // Toggle problem report UI by updating local state
+                setShowFollowUps(false);
+                setShowReportProblem((v) => !v);
+              }}
+              className="mt-2 inline-flex items-center justify-center rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs font-medium text-zinc-800 hover:bg-zinc-50 sm:mt-0"
+            >
+              Report a problem
+            </button>
+          </div>
+
+          {showReportProblem ? (
+            <div className="mt-3 space-y-2 rounded-2xl border border-zinc-200 bg-white p-3 text-xs text-zinc-700">
+              <label className="block text-[11px] font-semibold uppercase tracking-wide text-zinc-500">
+                Describe the problem (no sensitive data)
+              </label>
+              <textarea
+                value={reportText}
+                onChange={(e) => setReportText(e.target.value)}
+                className="h-20 w-full resize-y rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 outline-none ring-zinc-900/10 placeholder:text-zinc-400 focus:ring-4"
+                placeholder="What went wrong? What were you trying to do?"
+              />
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={submitReport}
+                  disabled={isSubmittingReport || !reportText.trim()}
+                  className="inline-flex items-center justify-center rounded-full bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white disabled:cursor-not-allowed disabled:opacity-60 hover:bg-zinc-800"
+                >
+                  {isSubmittingReport ? "Sending…" : "Submit problem"}
+                </button>
+                {reportStatus === "success" ? (
+                  <span className="text-[11px] text-emerald-700">
+                    Thanks — your report was logged.
+                  </span>
+                ) : null}
+                {reportStatus === "error" ? (
+                  <span className="text-[11px] text-rose-700">
+                    Couldn&apos;t send report. Please try again later.
+                  </span>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
         </footer>
       </div>
     </div>

@@ -47,7 +47,7 @@ A small full-stack-style project for **practicing Product Management mock interv
    Optional environment variables:
 
    - `USAGE_LOGGING_ENABLED=false` to disable per-request usage logging in production.
-   - `LOG_WEBHOOK_URL=https://script.google.com/.../exec` to forward lightweight usage events (timestamp, IP, category, questionId, event type, prompt, answer) to an external endpoint such as a Google Sheets Apps Script.
+   - `LOG_WEBHOOK_URL=https://script.google.com/...` to forward lightweight usage events (timestamp, truncated IP, category, questionId, event type, prompt, answer) to an external endpoint such as a Google Sheets Apps Script.
 
 4. **Run** the development server:
 
@@ -74,3 +74,4 @@ A small full-stack-style project for **practicing Product Management mock interv
 - API routes enforce **max input sizes** for prompts and answers and apply a simple **per-IP rate limit** to reduce abuse and accidental DoS.
 - The feedback API uses a **hardened Gemini prompt** that explicitly forbids revealing secrets and tries to avoid generating harmful content.
 - Usage logs (when enabled) are written as JSONL under `web/logs/usage.log`, with newlines stripped from content; in addition, if `LOG_WEBHOOK_URL` is set, a small sanitized JSON event is POSTed to that URL (for example, to append rows into a Google Sheet for longer-term analysis). Logging is best-effort and never affects user responses.
+- The footer includes a lightweight **problem report** form. Problem reports log a short, non-sensitive description plus basic context (category and question) into the same external logging destination as usage events. Please avoid pasting sensitive data into the report field.

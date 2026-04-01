@@ -1,4 +1,5 @@
 import type { Question } from "@/lib/types";
+import sanitizeHtml from "sanitize-html";
 
 export type FeedbackResult = {
   strengths: string[];
@@ -67,9 +68,18 @@ export function FeedbackPanel({
 
           <div className="grid gap-2">
             <h4 className="text-sm font-semibold text-zinc-900">Suggested rewrite (short)</h4>
-            <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-sm text-zinc-800 whitespace-pre-wrap">
-              {feedback.suggestedRewrite}
-            </div>
+            <div
+              className="rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-sm text-zinc-800 whitespace-pre-wrap"
+              // We allow only very simple HTML from the model for emphasis.
+              dangerouslySetInnerHTML={{
+                __html: sanitizeHtml(feedback.suggestedRewrite, {
+                  allowedTags: ["strong", "em", "b", "i", "br", "p", "span"],
+                  allowedAttributes: {
+                    span: ["style"],
+                  },
+                }),
+              }}
+            />
           </div>
 
           {feedback.followUpQuestions?.length ? (
