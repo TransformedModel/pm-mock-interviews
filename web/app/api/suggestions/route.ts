@@ -201,7 +201,8 @@ export async function POST(req: Request) {
 
     await fs.writeFile(filePath, lines.join("\n"), "utf8");
 
-    // Optional external usage log (e.g., Google Sheets Apps Script)
+    // Optional external usage log (e.g., Google Sheets Apps Script).
+    // Fire-and-forget so logging never blocks suggestion handling.
     const webhookUrl = process.env.LOG_WEBHOOK_URL;
     if (webhookUrl) {
       const entry = {
@@ -215,17 +216,13 @@ export async function POST(req: Request) {
       };
 
       try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 1500);
-
-        await fetch(webhookUrl, {
+        void fetch(webhookUrl, {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify(entry),
-          signal: controller.signal,
+        }).catch((e) => {
+          console.error("Usage webhook error (suggestion):", e);
         });
-
-        clearTimeout(timeout);
       } catch (e) {
         console.error("Usage webhook error (suggestion):", e);
       }

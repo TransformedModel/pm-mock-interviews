@@ -153,21 +153,19 @@ async function logUsage(body: FeedbackRequest, req: Request) {
     // Local JSONL log (useful for dev and quick inspection)
     await fs.appendFile(logPath, JSON.stringify(entry) + "\n", "utf8");
 
-    // Optional external webhook log (e.g., Google Sheets Apps Script)
+    // Optional external webhook log (e.g., Google Sheets Apps Script).
+    // Fire-and-forget: we intentionally do NOT await this so logging
+    // can never delay or break the main feedback response.
     const webhookUrl = process.env.LOG_WEBHOOK_URL;
     if (webhookUrl) {
       try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 1500);
-
-        await fetch(webhookUrl, {
+        void fetch(webhookUrl, {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify(entry),
-          signal: controller.signal,
+        }).catch((e) => {
+          console.error("Usage webhook error (feedback):", e);
         });
-
-        clearTimeout(timeout);
       } catch (e) {
         // Best-effort only; log and continue.
         console.error("Usage webhook error (feedback):", e);

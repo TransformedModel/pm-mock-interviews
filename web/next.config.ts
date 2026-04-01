@@ -13,10 +13,11 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self';",
-              "script-src 'self';",
+              // Allow inline scripts so Next.js runtime and dev tooling work correctly.
+              "script-src 'self' 'unsafe-inline';",
               "style-src 'self' 'unsafe-inline';",
               "img-src 'self' data:;",
-              "connect-src 'self';",
+              "connect-src 'self' ws://localhost:3000 ws://127.0.0.1:3000;",
               "frame-ancestors 'none';",
             ].join(" "),
           },
