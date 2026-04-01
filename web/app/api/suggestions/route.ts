@@ -201,6 +201,36 @@ export async function POST(req: Request) {
 
     await fs.writeFile(filePath, lines.join("\n"), "utf8");
 
+    // Optional external usage log (e.g., Google Sheets Apps Script)
+    const webhookUrl = process.env.LOG_WEBHOOK_URL;
+    if (webhookUrl) {
+      const entry = {
+        timestamp: new Date().toISOString(),
+        ip,
+        category,
+        questionId: fileName,
+        eventType: "suggestion_submitted",
+        prompt,
+        answer: modelAnswer.slice(0, MAX_MODEL_ANSWER_LENGTH),
+      };
+
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 1500);
+
+        await fetch(webhookUrl, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(entry),
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeout);
+      } catch (e) {
+        console.error("Usage webhook error (suggestion):", e);
+      }
+    }
+
     return NextResponse.json({ id: fileName, category: CATEGORY_LABELS[category] });
   } catch (e) {
     console.error("Error in /api/suggestions:", e);
