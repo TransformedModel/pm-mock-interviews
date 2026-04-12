@@ -301,3 +301,740 @@ questions:
       - What’s the fastest “stop the bleeding” move?
       - How do you avoid over-discounting?
 
+  - id: EA-013
+    difficulty: medium
+    prompt: Estimate the number of active Uber (or rideshare) drivers in New York City on a typical weekday.
+    what_good_looks_like:
+      - Clarifies “active” (online at least once vs full-time equivalents) and geography (five boroughs vs metro).
+      - Uses supply–demand or hours-driven / utilization framing, not a wild guess.
+      - Shows math with explicit assumptions and a reasonable range.
+      - Sanity-checks against rides per day and driver hours.
+    answer:
+      structure:
+        - Define active driver and geography.
+        - Estimate daily rides or driver-hours needed, then back into drivers.
+        - Or estimate licensed drivers × activity rate.
+        - State range and key sensitivities.
+      sample: >
+        I’ll estimate drivers who go online at least once on a weekday in NYC (five boroughs). Approach: start from demand.
+        NYC population ~8.5M; daily commuters and visitors add effective demand—say ~10M people needing mobility some days.
+        Rideshare might handle ~10–15% of non-transit trips in dense areas; simpler: industry ballpark often cited is millions of
+        rides/day in major metros. Assume NYC rideshare completes ~400k–700k trips/day (Uber + Lyft + others).
+
+        If average driver online 6 hours/day and completes ~2 rides/hour (mix of short Manhattan hops and airport), that is
+        ~12 rides per online driver-day. Drivers needed = trips / rides per driver = 500k / 12 ≈ 42k “driver-days” if everyone
+        worked one day—but many drivers are part-time. If average driver is online 3 days/week equivalent, active weekday
+        drivers ≈ 42k × (5/7) × adjustment… cleaner: suppose 500k trips and each active driver does 10 trips that day →
+        50k drivers minimum; if 15 trips → ~33k.
+
+        Cross-check supply side: NYC has a large TLC-licensed for-hire driver pool (order-of-magnitude tens of thousands);
+        not all drive daily. I’ll land on ~35k–60k drivers with at least one trip on a typical weekday, wider range 25k–80k
+        if trips/day is uncertain.
+    follow_ups:
+      - How would airport demand change your rides-per-driver assumption?
+      - What single data point from Uber would most shrink your confidence interval?
+
+  - id: EA-014
+    difficulty: medium
+    prompt: Estimate the number of domestic commercial passenger flights in the United States per day.
+    what_good_looks_like:
+      - Clarifies domestic vs international and commercial vs cargo/GA.
+      - Uses airports, movements, or seats as a decomposition path.
+      - Converts annual or hourly figures to daily with explicit rounding.
+      - Sanity-checks against public order-of-magnitude stats (rough).
+    answer:
+      structure:
+        - Define scope (US domestic, scheduled airline).
+        - Estimate from passengers or from airport operations.
+        - Divide to per day; give range.
+      sample: >
+        Scope: US domestic, scheduled commercial passenger flights (not private jets, not pure cargo).
+
+        Path A—passengers: US domestic enplanements are order-of-magnitude hundreds of millions per year (rough public
+        ballpark ~700M–800M/year). Average load factor ~80–90%; average seats per departure maybe ~140 for domestic mix.
+        Passengers per year / (load factor × seats) ≈ departures. 750M / (0.85 × 140) ≈ 750M / 120 ≈ 6.3M departures/year.
+        Per day: 6.3M / 365 ≈ 17,200 departures/day.
+
+        Path B—movements: large US airports each handle hundreds to over a thousand daily commercial movements; ~30 very
+        busy hubs plus hundreds of regional airports. Order-of-magnitude tens of thousands of commercial flights/day aligns
+        with Path A.
+
+        I’ll answer ~15k–25k domestic commercial passenger flights/day, noting international and cargo are excluded.
+    follow_ups:
+      - How would you separate mainline vs regional carriers?
+      - What happens to your estimate on Thanksgiving Sunday?
+
+  - id: EA-015
+    difficulty: easy
+    prompt: Estimate how many slices of pizza are consumed in the United States on a typical Friday night.
+    what_good_looks_like:
+      - Defines “Friday night” window and slice vs whole pie.
+      - Uses population × eating-out rate or pizza industry scale.
+      - Gives a range and a quick sanity check.
+    answer:
+      structure:
+        - Time window and unit.
+        - Population × participation × slices.
+        - Adjust for pizza-heavy vs other dinner choices.
+      sample: >
+        Define Friday night as 6pm–midnight. US population ~335M. Not everyone eats dinner out; assume ~20% of people have
+        pizza as part of dinner on a given Friday (delivery, dine-in, frozen baked at home counts). That’s ~67M people eating
+        some pizza; many eat 2 slices, kids 1—blended average 2 slices → ~130M slices.
+
+        Sanity: US has huge pizza market; if too high, cut participation to 12% → ~80M slices. Range ~70M–150M slices for that
+        window.
+    follow_ups:
+      - How would including school cafeterias change the estimate?
+      - What’s the most sensitive input?
+
+  - id: EA-016
+    difficulty: medium
+    prompt: Estimate the number of gas stations in California.
+    what_good_looks_like:
+      - Picks a structure (stations per capita, per vehicle, or per road mile).
+      - Uses California population/vehicle stock explicitly.
+      - Cross-checks two methods if possible.
+    answer:
+      structure:
+        - CA population and vehicles.
+        - Stations per vehicle or per capita from a national anchor.
+        - Range and reasonableness vs urban/rural CA.
+      sample: >
+        California population ~39M; registered vehicles very high, say ~35M light-duty vehicles (round).
+
+        Method 1—vehicles per station: US total gas stations often cited ~100k–150k for the country. CA is ~12% of US
+        population but car-dependent; assume CA has ~15% of stations → 15k–22k stations.
+
+        Method 2—per capita: if US ~330M people and 120k stations → ~1 station per 2,750 people. CA 39M / 2,750 ≈ 14k. CA
+        urban density might improve throughput so fewer stations per capita in cities but more in exurbs; blend ~10k–18k.
+
+        I’ll estimate ~12k–18k gas stations in California.
+    follow_ups:
+      - How do EVs change the long-run station count?
+      - Where would you pull a ground-truth list to validate?
+
+  - id: EA-017
+    difficulty: medium
+    prompt: Estimate global smartphone unit sales per year.
+    what_good_looks_like:
+      - Separates new sales vs refurbished if relevant.
+      - Anchors to population, replacement cycle, or market share logic.
+      - Produces a defensible order-of-magnitude with range.
+    answer:
+      structure:
+        - World population with phone access.
+        - Replacement cycle and market growth/replacement mix.
+        - Optional cross-check via installed base turnover.
+      sample: >
+        Global population ~8B; smartphone users maybe ~6–7B (many people share or use feature phones—use 6.5B smartphone
+        users). Average replacement cycle ~3–4 years for those who upgrade → annual replacements ≈ 6.5B / 3.5 ≈ 1.85B
+        phones/year.
+
+        Add net new users (first-time buyers) maybe +100–200M/year in emerging markets. Total new unit sales ballpark
+        ~1.2B–1.4B/year is a common industry order-of-magnitude; my quick math overshoots slightly—tune cycle to 4 years:
+        6.5B/4 ≈ 1.6B plus first-time buyers → still high. Interview OK to widen range: ~1.0B–1.5B new smartphones sold/year
+        globally, noting inventory and longer cycles pull it down.
+    follow_ups:
+      - How would you split premium vs budget phones?
+      - What metric would you track for “saturation”?
+
+  - id: EA-018
+    difficulty: easy
+    prompt: Estimate how many new email accounts are created on Gmail worldwide per day.
+    what_good_looks_like:
+      - Clarifies new accounts vs aliases; states scope.
+      - Uses internet users, signup friction, and competition.
+      - Compares to order-of-magnitude you already reasoned for “all providers” if needed.
+    answer:
+      structure:
+        - Define “new Gmail account”.
+        - Estimate signups across providers; apply Gmail share.
+        - Or estimate Google Workspace + consumer together.
+      sample: >
+        Scope: new @gmail.com (and maybe googlemail) consumer accounts plus consumer-driven signups; ignore Workspace unless
+        included—I'll say consumer Gmail.
+
+        Global daily new email addresses across all providers might be ~2–5M/day (from a prior Fermi). Gmail has large share
+        in many markets but not everywhere; assume 35–45% of new consumer mailboxes are Gmail → ~1M–2M/day.
+
+        Cross-check: if 1.5M/day × 365 ≈ 550M/year new Gmail accounts—high but not absurd given population and churn; many
+        are spam/abandoned. Range ~0.8M–2.5M/day.
+    follow_ups:
+      - How would bot signups bias public stats?
+      - What assumption would you validate with a single Google internal query?
+
+  - id: EA-019
+    difficulty: medium
+    prompt: Estimate the number of hotel rooms in Las Vegas.
+    what_good_looks_like:
+      - Uses visitor volume, occupancy, or inventory-based counting.
+      - Handles casino-resort scale (large properties).
+      - Gives a range and sanity-check vs tourism stats.
+    answer:
+      structure:
+        - Annual visitors and average stay.
+        - Rooms needed = visitors × nights / occupancy / rooms per property—or inventory build-up.
+        - Alternative: major strip properties × average room count.
+      sample: >
+        Las Vegas metro gets order-of-magnitude 40M+ visitors/year. Average stay ~3 nights → ~120M room-nights demanded
+        (rough). If annual occupancy averages ~85% for available room-nights, room-nights supplied ≈ demand / 0.85 ≈ 140M.
+
+        Room-nights / 365 ≈ 385k room-nights/night average occupied → rooms ≈ 385k / 0.85 ≈ 450k rooms inventory (if
+        occupancy 85%). That might be high; simpler inventory approach: ~150k–200k hotel rooms is a commonly cited
+        ballpark—strip mega-resorts with 3k–5k rooms each; ~30–50 major hotels plus many mid/smaller.
+
+        I’ll land ~130k–180k hotel rooms in Las Vegas proper (wider 100k–200k), noting definitions (metro vs strip) swing
+        results.
+    follow_ups:
+      - How would convention season change occupancy vs room count?
+      - Strip vs downtown—how would you segment?
+
+  - id: EA-020
+    difficulty: easy
+    prompt: Estimate how many toothbrushes are sold in the United States per year.
+    what_good_looks_like:
+      - Separates manual vs electric replacement if needed.
+      - Uses population × replacement cadence.
+      - Notes multipacks and bulk purchasing implicitly.
+    answer:
+      structure:
+        - US population.
+        - Brushes per person per year (manual vs electric heads).
+        - Multiply; range.
+      sample: >
+        US population ~335M. Assume each person uses ~3–4 manual toothbrushes/year (dentists recommend replace ~3 months).
+        Some use electric brush heads—smaller units but similar replacement cadence; keep one “brush equivalents” per person
+        ~4/year.
+
+        Sales ≈ 335M × 4 ≈ 1.34B brush units/year. Multipacks mean “items sold” vs “brushes” differs slightly. Range ~1.0B–1.6B
+        per year.
+    follow_ups:
+      - How would subscription toothbrush services change annual sales counting?
+      - What about hotels giving disposable brushes?
+
+  - id: EA-021
+    difficulty: medium
+    prompt: Estimate total annual movie theater admissions (tickets sold) in the United States.
+    what_good_looks_like:
+      - Clarifies domestic box office vs admissions if needed.
+      - Uses per-capita visits or box office / average ticket price.
+      - Acknowledges streaming substitution and post-pandemic shifts.
+    answer:
+      structure:
+        - US population and annual visits per capita.
+        - Or box office revenue / ATP.
+        - Range and reasonableness.
+      sample: >
+        US population ~335M. Pre-streaming era might have been ~4–5 theater visits per person per year; now lower—assume
+        ~1.5–2.5 visits/year post-pandemic recovery. Midpoint 2 → 335M × 2 ≈ 670M admissions/year.
+
+        Cross-check with revenue: domestic box office often cited ballpark single-digit billions/year; average ticket price
+        ~$10–12 → admissions ≈ $9B / $11 ≈ 800M. Close enough.
+
+        I’ll estimate ~550M–900M admissions/year in the US.
+    follow_ups:
+      - How would you estimate opening weekend only?
+      - Drive-ins vs multiplex—does segmentation matter?
+
+  - id: EA-022
+    difficulty: easy
+    prompt: Estimate how many tennis balls are used in the United States in one year (including new cans purchased for play).
+    what_good_looks_like:
+      - Defines “used” (opened for play vs manufacturing output).
+      - Segments casual vs club players or schools.
+      - Uses balls per player per year or cans per court hour.
+    answer:
+      structure:
+        - Number of regular tennis players.
+        - Balls lost/worn per playing hour or per month.
+        - Add coaches, clubs, ball machines.
+      sample: >
+        US people who play tennis at least monthly—guess ~12–18M. If they open 1 new can (3 balls) every 6 weeks on average,
+        that’s ~8–9 cans/year → ~24–27 balls/year each. 15M × 25 ≈ 375M balls/year.
+
+        Add high school/college teams, clubs, teaching pros with baskets—maybe +20–30% → ~450M–500M balls/year. Wide range
+        300M–700M given participation uncertainty.
+    follow_ups:
+      - How would pickleball growth affect tennis ball demand?
+      - What’s a quick retail shelf survey you’d run?
+
+  - id: EA-023
+    difficulty: medium
+    prompt: Estimate how many hours of video are uploaded to YouTube every minute.
+    what_good_looks_like:
+      - Clarifies uploads vs processing; uses creators, upload frequency, or watch-time proxy carefully.
+      - Distinguishes average video length.
+      - Gives order-of-magnitude with range.
+    answer:
+      structure:
+        - Daily upload count × average duration, scaled to per minute.
+        - Or creators × uploads × length.
+      sample: >
+        Public ballparks often cite hundreds of hours of video uploaded per minute globally; I’ll derive roughly.
+
+        Suppose 500M channels/creators is too high; active uploaders much smaller—say 10M people/organizations upload in a
+        day with average 1 upload/day → 10M videos/day. Average length maybe 8 minutes (long tail of shorts + long videos).
+        Total minutes/day = 10M × 8 = 80M minutes/day = 1.33M hours/day. Per minute: 1.33M / 1,440 ≈ 920 hours/minute.
+
+        If uploads are higher (30M/day) or longer (12 min), could be 2k–4k hours/minute. I’ll range ~500–2,000 hours/minute
+        globally; US-only would be a fraction of that.
+    follow_ups:
+      - How do Shorts change average duration and count?
+      - What system load does upload volume imply for transcoding?
+
+  - id: EA-024
+    difficulty: medium
+    prompt: Estimate the number of kindergarten teachers employed full-time in the United States.
+    what_good_looks_like:
+      - Uses kindergarten enrollment, class size, and FTE assumptions.
+      - Notes public vs private if relevant.
+      - Sanity-checks against total teacher workforce.
+    answer:
+      structure:
+        - Children ages 5–6 in kindergarten (public + private).
+        - Students per teacher ratio.
+        - FTE adjustments (aides vs lead teacher).
+      sample: >
+        US kindergarten enrollment (fall) often ballpark ~4M students public + ~0.5M private → ~4.5M.
+
+        Student–teacher ratio: public K often ~15–18 students per teacher; use 16 → 4M/16 = 250k public K teachers. Private
+        smaller classes, say 12:1 → 0.5M/12 ≈ 42k. Total ~290k FTE kindergarten teachers.
+
+        Range ~220k–350k after aides (not counted) and part-time. Sanity: total US teachers ~3M+; K-only being ~10% feels
+        plausible.
+    follow_ups:
+      - How would universal pre-K shift the labor pool?
+      - What state-level data would you pull first?
+
+  - id: EA-025
+    difficulty: medium
+    prompt: Estimate how many pairs of athletic shoes are sold in the United States each year.
+    what_good_looks_like:
+      - Separates athletic vs dress/casual if needed.
+      - Uses per-capita purchase rate or category spend / ASP.
+      - Range and demographic drivers.
+    answer:
+      structure:
+        - US population shoe-buying behavior.
+        - Pairs per person per year for athletic segment.
+        - Cross-check with footwear market size / price.
+      sample: >
+        US population ~335M. People who buy athletic shoes regularly—assume ~250M buy at least 1 pair/year; active buyers
+        ~150M buy 2–3 pairs/year. Rough pairs = 150M × 2.5 + 100M × 1 = 375M + 100M = 475M pairs/year athletic-heavy.
+
+        If many shoes are “athleisure” counted as athletic, stay high; strict performance running smaller. Range ~350M–600M
+        pairs/year sold in US (imports included in retail sales).
+    follow_ups:
+      - How would DTC brands distort traditional retail counts?
+      - Kids vs adults—where is growth?
+
+  - id: EA-026
+    difficulty: hard
+    prompt: Estimate the number of commercial data centers in the United States (facilities, not individual server racks).
+    what_good_looks_like:
+      - Defines “data center” (colocation, hyperscale, enterprise).
+      - Uses hyperscale campuses vs edge counts or revenue/employees proxy.
+      - Communicates huge uncertainty honestly.
+    answer:
+      structure:
+        - Segment hyperscale cloud vs colo vs enterprise on-prem facilities.
+        - Estimate each bucket; sum.
+      sample: >
+        Definitions matter: I’ll count distinct commercial facilities with meaningful IT load (exclude tiny server closets).
+
+        Hyperscale operators run on the order of tens to ~100+ large campuses/facilities each across regions—not thousands
+        each; US might be ~150–300 hyperscale-scale sites total across AWS/Azure/GCP/Meta/etc. (very rough).
+
+        Colocation providers (Equinix-like): hundreds of facilities nationally; guess ~600–1,200 colo sites.
+
+        Enterprise and regional providers: thousands of smaller DCs—hard; add ~2k–5k.
+
+        Sum wide: ~3,000–8,000 commercial data centers in the US, with an order-of-magnitude honest window 2k–10k.
+    follow_ups:
+      - What public filing would sharpen hyperscale counts?
+      - How does “edge” vs “core” change definitions?
+
+  - id: EA-027
+    difficulty: easy
+    prompt: Estimate how many fire hydrants are in New York City.
+    what_good_looks_like:
+      - Uses street length, blocks, or density proxy.
+      - Compares to population/area if helpful.
+      - Gives range and validation idea.
+    answer:
+      structure:
+        - NYC land area and street grid.
+        - Hydrants per mile of roadway or per intersection.
+      sample: >
+        NYC road network is huge—total roadway miles often cited ~6k–7k miles in NYC DOT territory (rough). Hydrants often
+        placed every ~250–350 feet along arterials for coverage; not every side street repeats fully—use ~1 hydrant per 300
+        feet along “hydranted” corridors.
+
+        Simpler heuristic: many US cities land ~100–200k hydrants for large metros; NYC-specific public sources sometimes
+        cite ~100k+ hydrants. Fermi: 300k street segments (guess) with average spacing implies order-of-magnitude 100k.
+
+        I’ll estimate ~90k–130k fire hydrants in NYC, wide range 70k–150k.
+    follow_ups:
+      - How would you validate with OpenStreetMap?
+      - Five boroughs vs MTA property—who counts?
+
+  - id: EA-028
+    difficulty: medium
+    prompt: Estimate how many domestic airline passengers are screened by the TSA at US airports on a peak summer travel day.
+    what_good_looks_like:
+      - Clarifies domestic vs all screenings if needed.
+      - Uses enplanements, connecting passengers, or checkpoint throughput.
+      - Notes peak vs average day multiplier.
+    answer:
+      structure:
+        - Annual US enplanements → average day → peak multiplier.
+        - Add connecting passengers screened again or not—state assumption.
+      sample: >
+        US enplanements ~800M/year domestic (rough). Average enplanements/day ≈ 800M/365 ≈ 2.2M. Peak summer Friday might
+        be ~1.2–1.4× average → ~2.6M–3.1M enplanements.
+
+        Not every traveler is screened twice same day; connections sometimes re-clear security—assume +10–20% extra
+        screenings vs enplanements → ~2.9M–3.7M passengers through TSA domestic checkpoints on a peak day.
+
+        Range ~2.5M–4.0M given holiday spikes.
+    follow_ups:
+      - PreCheck vs standard lanes—does it change passenger counts?
+      - How would you use checkpoint throughput caps?
+
+  - id: EA-029
+    difficulty: medium
+    prompt: Estimate how many McDonald’s locations exist worldwide.
+    what_good_looks_like:
+      - States franchised vs corporate if relevant.
+      - Uses geographic decomposition (US vs international).
+      - Cross-checks with known public ballparks.
+    answer:
+      structure:
+        - US count anchor.
+        - International multiplier by region.
+      sample: >
+        McDonald’s discloses restaurant counts periodically—interview answer should still show structure. US historically
+        ~13k–14k restaurants. International often ~2–3× US for McDonald’s global footprint.
+
+        If US ~13.5k and ex-US ~25k–28k → total ~38k–42k. Post-expansion in Asia/Middle East/Africa could push higher; I’ll
+        estimate ~40k–45k worldwide locations (including traditional + small-format), range 36k–50k.
+    follow_ups:
+      - How does same-store sales relate to store count strategy?
+      - China vs US—what differs in unit economics?
+
+  - id: EA-030
+    difficulty: medium
+    prompt: Estimate the total length of all US interstate highways combined (lane-miles vs centerline miles—pick one and state it).
+    what_good_looks_like:
+      - Picks centerline miles vs lane-miles explicitly.
+      - Uses network size anchor (federal stats ballpark) or builds from states.
+      - Reasonable order-of-magnitude.
+    answer:
+      structure:
+        - Define centerline miles for the Interstate System.
+        - Quote or infer ~50k miles scale from public knowledge.
+        - If lane-miles, multiply by typical lanes.
+      sample: >
+        I’ll use centerline miles of the Dwight D. Eisenhower National System of Interstate and Defense Highways—public
+        ballpark often cited around ~48k–47k centerline miles in recent decades (small changes with additions/retirements).
+
+        Lane-miles: if average ~3.2 lanes per interstate mile (mix of rural 2-lane and urban 6–10+), lane-miles ≈ 48k × 3.2
+        ≈ 150k lane-miles (very rough).
+
+        I’ll answer ~46k–50k centerline miles total US interstate system; lane-miles ~130k–180k depending on average lanes.
+    follow_ups:
+      - Why might “interstate” differ from “freeway mileage”?
+      - How would you estimate maintenance cost from lane-miles?
+
+  - id: EA-031
+    difficulty: easy
+    prompt: Estimate how many cups of water are consumed from office water coolers in the US on a typical workday.
+    what_good_looks_like:
+      - Defines office workers in-scope.
+      - Uses participation rate and cups per person.
+      - Optional jug replacement math as sanity check.
+    answer:
+      structure:
+        - US office-based workers on a weekday.
+        - Fraction using cooler vs tap/bottle.
+        - Cups per person.
+      sample: >
+        US civilian workforce ~165M; office/site-based (not purely remote) on a weekday maybe ~80M people working in
+        settings with a cooler—use 50M.
+
+        Suppose 30% use the cooler for drinking water during the day at ~3 cups (8 oz) each → 50M × 0.3 × 3 = 45M cups/day.
+
+        If remote work lowered office attendance, cut to 35M in-office → ~32M cups. Range ~25M–70M cups/day.
+    follow_ups:
+      - How would bottle-free corporate policies shift the estimate?
+      - What about hospitals vs offices?
+
+  - id: EA-032
+    difficulty: medium
+    prompt: Estimate how many packages Amazon delivers per day in the United States (last-mile Amazon Logistics, order-of-magnitude).
+    what_good_looks_like:
+      - Clarifies Amazon retail vs third-party marketplace if needed.
+      - Uses orders per customer, Prime households, or share of US e-commerce.
+      - Huge uncertainty acknowledged.
+    answer:
+      structure:
+        - US e-commerce packages/day scale.
+        - Amazon share of packages.
+        - Sanity vs UPS/USPS slice.
+      sample: >
+        US e-commerce packages might be tens of millions per day total (order-of-magnitude). Amazon is a large share of US
+        online retail—assume Amazon-branded logistics handles ~40–55% of US e-commerce package volume in some markets.
+
+        If total US ~60M–90M e-commerce packages/day, Amazon Logistics might be ~25M–45M/day. Alternatively: US Prime
+        households ~80M; suppose 0.4 packages per household per week average → 80M × 0.4 / 7 ≈ 4.6M/day—too low; many
+        non-Prime and B2B; raise orders/week assumption to ~1.2 combined → 80M × 1.2 / 7 ≈ 13.7M/day still low.
+
+        Better anchor: industry talks about Amazon shipping billions of packages/year in US → /365 ≈ 5M–10M+/day depending
+        year; some estimates higher. I’ll give ~8M–20M Amazon US deliveries/day, wide band.
+    follow_ups:
+      - How would you separate FBA vs retail first-party?
+      - What metric would you ask internally first?
+
+  - id: EA-033
+    difficulty: medium
+    prompt: Estimate the number of active dentists in the United States.
+    what_good_looks_like:
+      - Uses population, visit frequency, or workforce statistics framing.
+      - Distinguishes general vs specialists if mentioned.
+      - Range and sanity vs hygienists.
+    answer:
+      structure:
+        - US population and dental visit demand hours.
+        - Patients per dentist per year.
+        - Cross-check with known ADA ballparks if recalled.
+      sample: >
+        US population ~335M; average ~1.5–2 dental visits per person per year (not everyone goes—effective visiting
+        population lower). Suppose 200M people visit at least once/year → 300M–400M visits/year.
+
+        If a dentist does ~2,000–2,500 patient visits/year (mix of hygiene handled separately), dentists needed ≈
+        350M / 2,200 ≈ 160k dentists. Add specialists and reduce if hygienists absorb time—common workforce stats often cite
+        ~200k licensed dentists ballpark.
+
+        I’ll estimate ~180k–220k actively practicing dentists in the US.
+    follow_ups:
+      - Rural access—how does geography skew distribution?
+      - Insurance coverage effects on utilization?
+
+  - id: EA-034
+    difficulty: easy
+    prompt: Estimate how many weddings occur in the United States on a typical Saturday in June.
+    what_good_looks_like:
+      - Annual weddings → share on Saturdays → June seasonality.
+      - Or marriages filed per day with Saturday bump.
+      - Clear assumptions.
+    answer:
+      structure:
+        - US marriages per year.
+        - Fraction Saturday; June multiplier.
+      sample: >
+        US marriages per year often cited ~2M (round). Not all have big weddings; assume 1.6M “wedding events” needing a
+        Saturday slot. Saturdays/year ≈ 52; June has ~4 Saturdays and is popular—if June gets ~15% of annual Saturday
+        weddings, that’s 0.15 × (1.6M × 0.7 Saturday share)… simpler:
+
+        Annual Saturday weddings ≈ 70% of 2M = 1.4M across 52 Saturdays → average ~27k Saturdays/year. June Saturdays might
+        be ~2× average → ~54k weddings per June Saturday? That feels high; many markets concentrated.
+
+        Alternate: 2M/year / 365 ≈ 5.5k/day average; Saturday might be 3× → ~16k/day any Saturday; June +30% → ~21k. I’ll
+        range ~12k–25k US weddings on a typical Saturday in June.
+    follow_ups:
+      - Destination weddings—US vs abroad counting?
+      - COVID backlog—how would you adjust post-2020?
+
+  - id: EA-035
+    difficulty: medium
+    prompt: Estimate how many public EV charging ports exist in the United States (Level 2 + DC fast, order-of-magnitude).
+    what_good_looks_like:
+      - Clarifies port vs station vs connector.
+      - Uses EV stock, utilization, or government inventory anchors.
+      - Wide range acceptable with drivers.
+    answer:
+      structure:
+        - EVs on road needing public charging occasionally.
+        - Ports per EV or growth curves.
+        - Cross-check DOE/NREL order-of-magnitude if known publicly.
+      sample: >
+        Define a “port” as a single EVSE port (a stall can have 2 connectors sometimes—keep fuzzy).
+
+        US public charging has been growing fast; public ballparks often cited tens of thousands of DC fast “ports” and
+        hundreds of thousands of L2 ports historically moving toward ~150k+ DC connectors and ~1M+ L2 over time depending
+        source/year.
+
+        Order-of-magnitude interview answer: ~100k–200k DC fast charging ports/stalls and ~800k–1.5M L2 public ports,
+        combined ~1M–2M public ports nationwide (very wide; data changes yearly). I’ll say ~1.2M public ports total with
+        explicit uncertainty.
+    follow_ups:
+      - Urban curbside vs highway corridor—different planning?
+      - How would you forecast demand from fleet electrification?
+
+  - id: EA-036
+    difficulty: medium
+    prompt: Estimate how many hours Americans collectively spend watching streaming video on a typical weekday.
+    what_good_looks_like:
+      - Clarifies streaming vs broadcast.
+      - Uses population × viewing hours distribution.
+      - Splits TV vs mobile if helpful.
+    answer:
+      structure:
+        - US population and viewing participation.
+        - Average streaming hours per viewer weekday.
+      sample: >
+        US population ~335M. People who stream any video weekday—assume ~220M ages 13+. Average streaming among users maybe
+        2.5 hours/day (mix heavy/light); among all people 220M × 0.7 participate × 2.5h = 385M hours—too hand-wavy.
+
+        Cleaner: average across all Americans ~1.2 hours/day streaming (includes background) → 335M × 1.2 ≈ 400M person-hours
+        / day. If 60% is true focused viewing, ~240M hours.
+
+        I’ll estimate ~300M–500M person-hours/day of streaming video in the US on a weekday.
+    follow_ups:
+      - How would you measure “co-viewing” on one screen?
+      - YouTube vs Netflix—split assumptions?
+
+  - id: EA-037
+    difficulty: hard
+    prompt: Estimate the total floor area (square feet) of all Walmart supercenters in the United States combined.
+    what_good_looks_like:
+      - Estimates store count and typical square footage.
+      - Notes supercenter vs neighborhood market definition.
+      - Multiplies and ranges.
+    answer:
+      structure:
+        - US Walmart store count by format.
+        - Average selling square footage + backroom if included—state.
+      sample: >
+        Define “supercenter” as large-format Walmart with full grocery—US count ballpark ~3.5k–3.8k stores (rough public
+        magnitude; exact changes yearly).
+
+        Typical supercenter selling area often ~150k–180k sq ft; including backroom/non-selling might +20–30%. Use 170k
+        selling sq ft average.
+
+        Total selling area ≈ 3,700 × 170k ≈ 629M sq ft. Add small formats incorrectly excluded—if we only count
+        supercenters narrowly at 3,400 stores × 175k → 595M sq ft.
+
+        I’ll estimate ~550M–700M square feet combined selling floor for US Walmart supercenters (wide).
+    follow_ups:
+      - How does omnichannel pickup affect useful floor productivity?
+      - International vs US footprint comparison?
+
+  - id: EA-038
+    difficulty: medium
+    prompt: Estimate how many cranes (tower + mobile construction cranes) are operating on a typical weekday in major US metros combined.
+    what_good_looks_like:
+      - Clarifies “operating” vs “owned”.
+      - Uses construction spend, permits, or per-city sampling logic.
+      - Huge uncertainty; communicates honestly.
+    answer:
+      structure:
+        - Major metro count.
+        - Active large projects per metro × cranes per project.
+      sample: >
+        Define top ~15 US metros with heavy construction (NYC, LA, SF, Seattle, Dallas, etc.). Suppose each averages
+        ~40–120 active tower cranes at any time (NYC/SF high; smaller cities low)—average ~70 per top-15 → ~1,050 tower
+        cranes.
+
+        Mobile cranes on road construction: maybe 3–5× tower count nationally for “active weekday”—rough guess +3k–5k.
+
+        Combined wild range ~3k–8k cranes operating weekdays across major US metros; honest uncertainty ±50%.
+    follow_ups:
+      - How would you use building permit data?
+      - Safety incidents rate per crane-hour—why estimate it?
+
+  - id: EA-039
+    difficulty: easy
+    prompt: Estimate how many bananas are consumed in the United States per year.
+    what_good_looks_like:
+      - Per capita consumption anchor.
+      - Population multiply.
+      - Sanity vs imports/production.
+    answer:
+      structure:
+        - US population.
+        - Bananas per person per year.
+      sample: >
+        US population ~335M. Average banana consumption often cited around ~25–30 lbs/person/year; banana weight ~0.25 lb
+        each → ~100–120 bananas/person/year.
+
+        Total bananas ≈ 335M × 110 ≈ 37B bananas/year consumed (including waste/peel weight nuances). Range ~30B–45B.
+    follow_ups:
+      - Organic vs conventional split?
+      - How would spoilage change “consumption”?
+
+  - id: EA-040
+    difficulty: medium
+    prompt: Estimate how many new single-family home construction starts occur in the United States per month.
+    what_good_looks_like:
+      - Uses annual housing starts / 12 or Census-style reasoning.
+      - Separates single-family vs multifamily if needed.
+      - Notes cyclical macro sensitivity.
+    answer:
+      structure:
+        - Annual SF starts from macro anchor.
+        - Divide by 12; discuss seasonality.
+      sample: >
+        Macro cycles vary; use a “normal-ish” year anchor. US private housing starts often fluctuate; single-family annual
+        might be ~800k–1.0M starts/year in a moderate cycle (not peak, not trough).
+
+        Monthly average ≈ 900k / 12 ≈ 75k starts/month. Seasonality: spring/summer higher—typical month might range
+        60k–90k. I’ll answer ~65k–85k single-family starts/month in a mid-cycle year, noting recession cuts this sharply.
+    follow_ups:
+      - Multifamily vs SF—why separate them strategically?
+      - Permits vs starts lag—how would you model?
+
+  - id: EA-041
+    difficulty: medium
+    prompt: Estimate how many SQL queries are executed per second against all Snowflake customer warehouses worldwide (order-of-magnitude).
+    what_good_looks_like:
+      - Clarifies queries vs statements; warehouse concurrency.
+      - Builds from customer count, active users, or query frequency.
+      - Honest uncertainty for proprietary systems.
+    answer:
+      structure:
+        - Enterprise data workloads scale.
+        - Customers × concurrent queries / average duration.
+        - Log-based reasoning.
+      sample: >
+        This is highly proprietary; interviewer wants structured thinking. Suppose Snowflake has order-of-magnitude ~10k
+        large enterprise customers and many SMBs—total active accounts maybe tens of thousands to ~100k paying accounts.
+
+        If average account runs ~5–20 concurrent analytical queries during business hours with global smoothing, global
+        average concurrency might be ~200k–1M simultaneous queries peak; per-second executions depend on query length.
+
+        If median query lasts ~5–30 seconds, completions per second ≈ concurrent / duration → 500k / 10s = 50k queries/sec
+        peak-ish globally; off-peak much lower; daily average far lower.
+
+        I’ll give a wild but structured band ~5k–50k query completions/sec globally averaged across the day, and much higher
+        peak; emphasize needing internal telemetry.
+    follow_ups:
+      - How does caching change query hit rates?
+      - What’s the difference between metadata queries and table scans?
+
+  - id: EA-042
+    difficulty: medium
+    prompt: Estimate how many red traffic lights are simultaneously showing “stop” for vehicles in Manhattan at any random moment during weekday rush hour.
+    what_good_looks_like:
+      - Defines Manhattan boundaries and what counts as a signalized approach.
+      - Uses intersection count × approaches × phase assumptions.
+      - States massive uncertainty and sanity-checks.
+    answer:
+      structure:
+        - Intersections with signals in Manhattan.
+        - Approaches per intersection; fraction red at a random instant for thru traffic.
+      sample: >
+        Manhattan street grid: ~200 N–S avenues × ~12 blocks long is wrong; better: land area ~23 sq mi with dense grid.
+        Signalized intersections might be ~6k–10k in Manhattan (rough DOT-scale guess).
+
+        Each intersection might control ~4 vehicle approaches (sometimes more with turn lanes). Random moment in a
+        two-phase cycle: roughly half of thru approaches show red for a given direction; more complex with protected turns.
+
+        Very rough: 8,000 intersections × 4 approaches × 0.45 red at random time ≈ 14,400 red lights. Wide range 8k–25k
+        depending on one-way grids, pedestrian scrambles, and timing plans.
+
+        I’ll answer ~10k–20k red vehicular traffic lights simultaneously in Manhattan at a random rush-hour instant, with big
+        error bars.
+    follow_ups:
+      - How would connected signals change steady-state red time?
+      - What data would NYC’s DOT open dataset give you?

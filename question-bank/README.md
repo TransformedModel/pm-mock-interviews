@@ -27,7 +27,7 @@ This folder contains an extensive, app-ready repository of **Product Management 
 ## Coverage (current)
 
 - `categories/product_design.yaml`: 25 questions
-- `categories/estimation_analytical.yaml`: 12 questions
+- `categories/estimation_analytical.yaml`: 42 questions
 - `categories/behavioral.yaml`: 15 questions
 - `categories/strategy.yaml`: 12 questions
 - `categories/technical.yaml`: 12 questions
