@@ -1,0 +1,13 @@
+{
+  "name": "pm-mock-interviews",
+  "private": true,
+  "description": "Monorepo root so Railway/Nixpacks installs Node; the app lives in web/",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "postinstall": "npm ci --prefix web",
+    "build": "npm run build --prefix web",
+    "start": "npm run start --prefix web"
+  }
+}
