@@ -6,6 +6,7 @@ A small full-stack-style project for **practicing Product Management mock interv
 
 | Path | Purpose |
 |------|--------|
+| [`package.json`](package.json) | Monorepo root shim so platforms like **Railway** install Node/npm and run `web/` via `postinstall` / `build` / `start`. |
 | [`question-bank/`](question-bank/) | YAML question files by category, schema, and notes on how to use the bank offline. |
 | [`web/`](web/) | Next.js (App Router) app: category picker, random question, answer box, feedback API, optional suggestion flow. |
 

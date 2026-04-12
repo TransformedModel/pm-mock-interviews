@@ -39,9 +39,12 @@ The production build prerenders `/` and reads YAML from disk. The `build` script
 
 ### Railway (Nixpacks)
 
-1. In the service settings, set **Root Directory** to **empty** (repository root), *not* `web`. If the root is only `web`, the build often has no `question-bank/` folder and the sync step fails.
-2. **Build command**: `cd web && npm install && npm run build`
-3. **Start command**: `cd web && npm run start`
+1. Set **Root Directory** to **empty** (repository root), *not* `web`, so `question-bank/` exists next to `web/` during the build.
+2. The repo root has a **`package.json`** so Nixpacks installs **Node/npm** (without it, a custom `cd web && npm …` command can fail with `npm: not found`).
+3. Prefer Railway’s defaults, or set explicitly:
+   - **Build command**: `npm install && npm run build` (from repo root)
+   - **Start command**: `npm start` (from repo root)  
+   If you still use `cd web && …`, Node should now be available; root `postinstall` runs `npm ci --prefix web` so dependencies install correctly.
 
 ### Docker
 
