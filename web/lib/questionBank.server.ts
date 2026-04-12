@@ -14,6 +14,11 @@ import { CATEGORY_FILES } from "@/lib/types";
  */
 let resolvedCategoriesDir: string | null = null;
 
+function parentIsFilesystemRoot(cwd: string): boolean {
+  const parent = path.resolve(cwd, "..");
+  return parent === path.parse(parent).root;
+}
+
 function categoriesDir(): string {
   if (resolvedCategoriesDir) return resolvedCategoriesDir;
 
@@ -23,12 +28,19 @@ function categoriesDir(): string {
     return resolvedCategoriesDir;
   }
 
-  const candidates = [
-    path.resolve(process.cwd(), "question-bank", "categories"),
-    path.resolve(process.cwd(), "..", "question-bank", "categories"),
+  const cwd = process.cwd();
+  const candidates: string[] = [
+    // Filled by `npm run build` → sync-question-bank.mjs, or Docker COPY
+    path.resolve(cwd, "question-bank", "categories"),
   ];
+  // Avoid `/question-bank/...` when cwd is `/app` and `..` is `/` (web-only image).
+  if (!parentIsFilesystemRoot(cwd)) {
+    candidates.push(path.resolve(cwd, "..", "question-bank", "categories"));
+  }
 
-  for (const dir of candidates) {
+  const unique = [...new Set(candidates)];
+
+  for (const dir of unique) {
     if (existsSync(dir)) {
       resolvedCategoriesDir = dir;
       return dir;
@@ -39,8 +51,9 @@ function categoriesDir(): string {
     [
       "Could not find question-bank YAML directory.",
       "Tried:",
-      ...candidates.map((d) => `  - ${d}`),
-      "Fix: deploy the full repository (including question-bank/), or set QUESTION_BANK_CATEGORIES_DIR to the absolute path of question-bank/categories.",
+      ...unique.map((d) => `  - ${d}`),
+      "Fix: ensure `npm run build` runs the sync step (see package.json), use repo-root Dockerfile,",
+      "or set QUESTION_BANK_CATEGORIES_DIR. On Railway, use the repository root as the service root so `question-bank/` is present at build time.",
     ].join("\n"),
   );
 }

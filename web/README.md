@@ -35,13 +35,26 @@ Open `http://localhost:3000` to use the app.
 
 ## Deploying (Railway, Docker, etc.)
 
-The build prerenders `/` and must read the YAML files on disk. **Use the monorepo root** as the service root (the directory that contains both `web/` and `question-bank/`), then set:
+The production build prerenders `/` and reads YAML from disk. The `build` script runs **`scripts/sync-question-bank.mjs` first**, which copies `../question-bank` into `web/question-bank/` (gitignored) so the bank is always next to the app.
 
-- **Root directory**: repository root (not only `web/`)
-- **Install / build**: e.g. `cd web && npm install && npm run build`
-- **Start**: e.g. `cd web && npm run start`
+### Railway (Nixpacks)
 
-If the host runs commands with cwd at repo root, the app resolves `question-bank/categories` automatically. If you keep cwd inside `web/` only, that still works. If your layout is custom, set **`QUESTION_BANK_CATEGORIES_DIR`** to the absolute path of the `categories` folder (the one that contains `product_design.yaml`, etc.).
+1. In the service settings, set **Root Directory** to **empty** (repository root), *not* `web`. If the root is only `web`, the build often has no `question-bank/` folder and the sync step fails.
+2. **Build command**: `cd web && npm install && npm run build`
+3. **Start command**: `cd web && npm run start`
+
+### Docker
+
+From the **repository root** (where this repo’s `Dockerfile` lives):
+
+```bash
+docker build -t pm-mock-interviews .
+docker run -p 3000:3000 -e GEMINI_API_KEY=... pm-mock-interviews
+```
+
+### Custom layout
+
+Set **`QUESTION_BANK_CATEGORIES_DIR`** to the absolute path of the `categories` directory (the one that contains `product_design.yaml`, etc.).
 
 ## Troubleshooting
 

@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# copied from ../question-bank by scripts/sync-question-bank.mjs during build
+/question-bank
