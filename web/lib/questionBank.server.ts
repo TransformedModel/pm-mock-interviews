@@ -1,12 +1,48 @@
 import fs from "node:fs/promises";
+import { existsSync } from "node:fs";
 import path from "node:path";
 import yaml from "js-yaml";
 
 import type { CategoryFile, CategoryKey, QuestionBank } from "@/lib/types";
 import { CATEGORY_FILES } from "@/lib/types";
 
+/**
+ * YAML files live in the repo under `question-bank/categories/`.
+ * - Local dev: cwd is usually `web/`, so `../question-bank/categories` works.
+ * - Some hosts (e.g. Railway with repo root as cwd): `question-bank/categories` under cwd.
+ * - If only `web/` is copied into the image, set QUESTION_BANK_CATEGORIES_DIR to the real path.
+ */
+let resolvedCategoriesDir: string | null = null;
+
 function categoriesDir(): string {
-  return path.resolve(process.cwd(), "..", "question-bank", "categories");
+  if (resolvedCategoriesDir) return resolvedCategoriesDir;
+
+  const env = process.env.QUESTION_BANK_CATEGORIES_DIR?.trim();
+  if (env) {
+    resolvedCategoriesDir = path.resolve(env);
+    return resolvedCategoriesDir;
+  }
+
+  const candidates = [
+    path.resolve(process.cwd(), "question-bank", "categories"),
+    path.resolve(process.cwd(), "..", "question-bank", "categories"),
+  ];
+
+  for (const dir of candidates) {
+    if (existsSync(dir)) {
+      resolvedCategoriesDir = dir;
+      return dir;
+    }
+  }
+
+  throw new Error(
+    [
+      "Could not find question-bank YAML directory.",
+      "Tried:",
+      ...candidates.map((d) => `  - ${d}`),
+      "Fix: deploy the full repository (including question-bank/), or set QUESTION_BANK_CATEGORIES_DIR to the absolute path of question-bank/categories.",
+    ].join("\n"),
+  );
 }
 
 async function loadCategoryFile(categoryKey: CategoryKey): Promise<CategoryFile> {
