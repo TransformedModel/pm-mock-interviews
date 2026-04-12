@@ -9,13 +9,55 @@ export type FeedbackResult = {
   rubricCoverage: { bullet: string; covered: boolean; notes?: string }[];
 };
 
+const RICH_TEXT_SANITIZE: sanitizeHtml.IOptions = {
+  allowedTags: ["strong", "em", "b", "i", "br", "p", "span"],
+  allowedAttributes: {
+    span: ["style"],
+  },
+};
+
+/** Decode entities; repeat passes so `&amp;lt;strong&amp;gt;` becomes real tags. */
 function decodeHtmlEntities(input: string): string {
-  return input
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&amp;/g, "&")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'");
+  let s = input;
+  for (let pass = 0; pass < 8; pass++) {
+    const prev = s;
+    s = s
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&#x27;/gi, "'")
+      .replace(/&#(\d+);/g, (_, code) => {
+        const n = parseInt(code, 10);
+        return Number.isFinite(n) && n >= 0 && n <= 0x10ffff ? String.fromCodePoint(n) : _;
+      })
+      .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => {
+        const n = parseInt(hex, 16);
+        return Number.isFinite(n) && n >= 0 && n <= 0x10ffff ? String.fromCodePoint(n) : _;
+      });
+    if (s === prev) break;
+  }
+  return s;
+}
+
+function richTextHtml(raw: string): string {
+  return sanitizeHtml(decodeHtmlEntities(raw), RICH_TEXT_SANITIZE);
+}
+
+function RichLine({
+  html,
+  className,
+}: {
+  html: string;
+  className?: string;
+}) {
+  return (
+    <span
+      className={className}
+      dangerouslySetInnerHTML={{ __html: richTextHtml(html) }}
+    />
+  );
 }
 
 export function FeedbackPanel({
@@ -38,8 +80,10 @@ export function FeedbackPanel({
           <div className="grid gap-2">
             <h4 className="text-sm font-semibold text-zinc-900">Strengths</h4>
             <ul className="list-disc space-y-1 pl-5 text-sm text-zinc-700">
-              {feedback.strengths.map((s) => (
-                <li key={s}>{s}</li>
+              {feedback.strengths.map((s, i) => (
+                <li key={`s-${i}`}>
+                  <RichLine html={s} />
+                </li>
               ))}
             </ul>
           </div>
@@ -47,8 +91,10 @@ export function FeedbackPanel({
           <div className="grid gap-2">
             <h4 className="text-sm font-semibold text-zinc-900">Gaps</h4>
             <ul className="list-disc space-y-1 pl-5 text-sm text-zinc-700">
-              {feedback.gaps.map((g) => (
-                <li key={g}>{g}</li>
+              {feedback.gaps.map((g, i) => (
+                <li key={`g-${i}`}>
+                  <RichLine html={g} />
+                </li>
               ))}
             </ul>
           </div>
@@ -56,8 +102,8 @@ export function FeedbackPanel({
           <div className="grid gap-2">
             <h4 className="text-sm font-semibold text-zinc-900">Rubric coverage</h4>
             <ul className="space-y-2">
-              {feedback.rubricCoverage.map((r) => (
-                <li key={r.bullet} className="flex items-start gap-2">
+              {feedback.rubricCoverage.map((r, i) => (
+                <li key={`r-${i}`} className="flex items-start gap-2">
                   <span
                     className={[
                       "mt-0.5 inline-flex h-5 w-5 flex-none items-center justify-center rounded-full text-xs font-semibold",
@@ -67,8 +113,14 @@ export function FeedbackPanel({
                     {r.covered ? "✓" : "–"}
                   </span>
                   <div className="min-w-0">
-                    <div className="text-sm text-zinc-800">{r.bullet}</div>
-                    {r.notes ? <div className="text-xs text-zinc-500">{r.notes}</div> : null}
+                    <div className="text-sm text-zinc-800">
+                      <RichLine html={r.bullet} />
+                    </div>
+                    {r.notes ? (
+                      <div className="text-xs text-zinc-500">
+                        <RichLine html={r.notes} />
+                      </div>
+                    ) : null}
                   </div>
                 </li>
               ))}
@@ -79,17 +131,8 @@ export function FeedbackPanel({
             <h4 className="text-sm font-semibold text-zinc-900">Suggested rewrite (short)</h4>
             <div
               className="rounded-xl border border-zinc-200 bg-zinc-50 p-3 text-sm text-zinc-800 whitespace-pre-wrap"
-              // We allow only very simple HTML from the model for emphasis.
               dangerouslySetInnerHTML={{
-                __html: sanitizeHtml(
-                  decodeHtmlEntities(feedback.suggestedRewrite),
-                  {
-                    allowedTags: ["strong", "em", "b", "i", "br", "p", "span"],
-                    allowedAttributes: {
-                      span: ["style"],
-                    },
-                  },
-                ),
+                __html: richTextHtml(feedback.suggestedRewrite),
               }}
             />
           </div>
@@ -98,8 +141,10 @@ export function FeedbackPanel({
             <div className="grid gap-2">
               <h4 className="text-sm font-semibold text-zinc-900">Likely follow-ups</h4>
               <ul className="list-disc space-y-1 pl-5 text-sm text-zinc-700">
-                {feedback.followUpQuestions.map((q) => (
-                  <li key={q}>{q}</li>
+                {feedback.followUpQuestions.map((q, i) => (
+                  <li key={`f-${i}`}>
+                    <RichLine html={q} />
+                  </li>
                 ))}
               </ul>
             </div>
