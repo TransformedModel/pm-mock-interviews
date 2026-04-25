@@ -248,7 +248,7 @@ export function InterviewPrepApp({ bank, initialCategory, initialQuestion }: Pro
                 .
               </span>
               <span>
-                Built through vibe-coding with the valuable contributions of Cursor, Gemini and Render.
+                Built through vibe-coding with the valuable contributions of Cursor and Gemini.
                 This application is purely experimental; please don&apos;t input any sensitive data here.
                 The app is using the Gemini free tier and may run out of credits at any time.
               </span>

@@ -6,7 +6,7 @@ A small full-stack-style project for **practicing Product Management mock interv
 
 | Path | Purpose |
 |------|--------|
-| [`package.json`](package.json) | Monorepo root shim so platforms like **Railway** install Node/npm and run `web/` via `postinstall` / `build` / `start`. |
+| [`package.json`](package.json) | Monorepo root shim so build platforms install Node/npm and run `web/` via `postinstall` / `build` / `start`. |
 | [`question-bank/`](question-bank/) | YAML question files by category, schema, and notes on how to use the bank offline. |
 | [`web/`](web/) | Next.js (App Router) app: category picker, random question, answer box, feedback API, optional suggestion flow. |
 
@@ -71,7 +71,6 @@ A small full-stack-style project for **practicing Product Management mock interv
 
 ## Deploying
 
-- **Railway**: supported; see [`web/README.md`](web/README.md) for repo-root vs `web/` root settings.
 - **Cloudflare Pages**: supported via `npm run build:cf` (Cloudflare edge runtime). The build bundles the YAML question bank into generated JSON; API routes don’t write local log files, so use `LOG_WEBHOOK_URL` for persistence.
 
 ## Security notes

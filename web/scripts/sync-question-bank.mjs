@@ -40,9 +40,7 @@ async function main() {
       `Expected monorepo sibling: ${srcCategories}`,
       `or an existing: ${destCategories}`,
       "",
-      "Railway / Docker: set the service root to the Git repo root (folder that contains both",
-      "`web/` and `question-bank/`), then build with `cd web && npm install && npm run build`,",
-      "or use the repo-root Dockerfile.",
+      "Ensure your checkout includes both `web/` and `question-bank/`, then run `npm run build` from `web/`.",
       "You can also set QUESTION_BANK_CATEGORIES_DIR to an absolute path to the categories folder.",
     ].join("\n"),
   );

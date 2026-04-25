@@ -33,20 +33,7 @@ Open `http://localhost:3000` to use the app.
 - The question bank is loaded server-side from `../question-bank/categories/*.yaml` (YAML is the source of truth).
 - Submitting an answer calls `POST /api/feedback`, which uses Gemini and returns strict JSON feedback.
 
-## Deploying (Railway, Cloudflare, Docker, etc.)
-
-The production build prerenders `/` and reads YAML from disk. The `build` script runs **`scripts/sync-question-bank.mjs` first**, which copies `../question-bank` into `web/question-bank/` (gitignored) so the bank is always next to the app.
-
-### Railway (Nixpacks)
-
-1. Set **Root Directory** to **empty** (repository root), *not* `web`, so `question-bank/` exists next to `web/` during the build.
-2. The repo root has a **`package.json`** so Nixpacks installs **Node/npm** (without it, a custom `cd web && npm …` command can fail with `npm: not found`).
-3. Prefer Railway’s defaults, or set explicitly:
-   - **Build command**: `npm install && npm run build` (from repo root)
-   - **Start command**: `npm start` (from repo root)  
-   If you still use `cd web && …`, Node should now be available; root `postinstall` runs `npm ci --prefix web` so dependencies install correctly.
-
-### Cloudflare Pages
+## Deploying (Cloudflare Pages)
 
 Cloudflare runs Next.js API routes on an **edge runtime**, so:
 - The question bank is **bundled into the build** (YAML → generated JSON).
@@ -62,19 +49,6 @@ Environment variables (Pages → Settings → Variables):
 - `GEMINI_API_KEY` (required for feedback)
 - `LOG_WEBHOOK_URL` (optional but recommended)
 - `USAGE_LOGGING_ENABLED=false` (optional)
-
-### Docker
-
-From the **repository root** (where this repo’s `Dockerfile` lives):
-
-```bash
-docker build -t pm-mock-interviews .
-docker run -p 3000:3000 -e GEMINI_API_KEY=... pm-mock-interviews
-```
-
-### Custom layout
-
-Set **`QUESTION_BANK_CATEGORIES_DIR`** to the absolute path of the `categories` directory (the one that contains `product_design.yaml`, etc.).
 
 ## Troubleshooting
 

@@ -1,7 +1,7 @@
 {
   "name": "pm-mock-interviews",
   "private": true,
-  "description": "Monorepo root so Railway/Nixpacks installs Node; the app lives in web/",
+  "description": "Monorepo root shim; the app lives in web/",
   "engines": {
     "node": ">=20"
   },

@@ -1,6 +1,4 @@
 # Build from the repository root (not only `web/`) so `question-bank/` is available.
-# Railway: set root directory to the repo, Dockerfile path = Dockerfile, or use the
-# custom build/start commands in web/README.md instead of Docker.
 
 FROM node:22-alpine AS builder
 WORKDIR /app
