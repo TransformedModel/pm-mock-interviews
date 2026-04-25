@@ -1,6 +1,6 @@
-import fs from "node:fs/promises";
-import path from "node:path";
 import { NextResponse } from "next/server";
+
+export const runtime = "edge";
 
 type ReportBody = {
   description: string;
@@ -60,14 +60,8 @@ export async function POST(req: Request) {
     answer: "",
   };
 
-  try {
-    const logDir = path.resolve(process.cwd(), "logs");
-    const logPath = path.join(logDir, "usage.log");
-    await fs.mkdir(logDir, { recursive: true });
-    await fs.appendFile(logPath, JSON.stringify(entry) + "\n", "utf8");
-  } catch {
-    // Ignore local log failures.
-  }
+  // Note: Cloudflare Pages/Workers runs in an edge runtime with no writable filesystem,
+  // so we intentionally do not attempt to write local logs here.
 
   const webhookUrl = process.env.LOG_WEBHOOK_URL;
   if (webhookUrl) {

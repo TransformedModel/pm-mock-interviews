@@ -1,7 +1,7 @@
-import fs from "node:fs/promises";
-import path from "node:path";
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+
+export const runtime = "edge";
 
 type FeedbackRequest = {
   category: string;
@@ -207,10 +207,6 @@ async function logUsage(body: FeedbackRequest, req: Request) {
 
     const ip = getClientIp(req);
 
-    const logDir = path.resolve(process.cwd(), "logs");
-    const logPath = path.join(logDir, "usage.log");
-    await fs.mkdir(logDir, { recursive: true });
-
     const sanitize = (value: string) => value.replace(/[\r\n]+/g, " ").slice(0, MAX_ANSWER_LENGTH);
 
     const entry = {
@@ -223,8 +219,8 @@ async function logUsage(body: FeedbackRequest, req: Request) {
       answer: sanitize(body.userAnswer),
     };
 
-    // Local JSONL log (useful for dev and quick inspection)
-    await fs.appendFile(logPath, JSON.stringify(entry) + "\n", "utf8");
+    // Note: Cloudflare Pages/Workers runs in an edge runtime with no writable filesystem,
+    // so we intentionally do not attempt to write local logs here.
 
     // Optional external webhook log (e.g., Google Sheets Apps Script).
     // Fire-and-forget: we intentionally do NOT await this so logging

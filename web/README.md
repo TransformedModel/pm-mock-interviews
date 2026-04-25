@@ -33,7 +33,7 @@ Open `http://localhost:3000` to use the app.
 - The question bank is loaded server-side from `../question-bank/categories/*.yaml` (YAML is the source of truth).
 - Submitting an answer calls `POST /api/feedback`, which uses Gemini and returns strict JSON feedback.
 
-## Deploying (Railway, Docker, etc.)
+## Deploying (Railway, Cloudflare, Docker, etc.)
 
 The production build prerenders `/` and reads YAML from disk. The `build` script runs **`scripts/sync-question-bank.mjs` first**, which copies `../question-bank` into `web/question-bank/` (gitignored) so the bank is always next to the app.
 
@@ -45,6 +45,23 @@ The production build prerenders `/` and reads YAML from disk. The `build` script
    - **Build command**: `npm install && npm run build` (from repo root)
    - **Start command**: `npm start` (from repo root)  
    If you still use `cd web && …`, Node should now be available; root `postinstall` runs `npm ci --prefix web` so dependencies install correctly.
+
+### Cloudflare Pages
+
+Cloudflare runs Next.js API routes on an **edge runtime**, so:
+- The question bank is **bundled into the build** (YAML → generated JSON).
+- API routes **do not write local files**; use `LOG_WEBHOOK_URL` if you want persistent logs.
+
+Pages settings:
+- **Framework preset**: Next.js
+- **Root directory**: `web`
+- **Build command**: `npm run build:cf`
+- **Build output directory**: `.vercel/output/static`
+
+Environment variables (Pages → Settings → Variables):
+- `GEMINI_API_KEY` (required for feedback)
+- `LOG_WEBHOOK_URL` (optional but recommended)
+- `USAGE_LOGGING_ENABLED=false` (optional)
 
 ### Docker
 

@@ -40,5 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# generated at build time by scripts/build-question-bank-json.mjs
+/lib/generated/questionBank.generated.json
+
 # copied from ../question-bank by scripts/sync-question-bank.mjs during build
 /question-bank

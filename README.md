@@ -69,6 +69,11 @@ A small full-stack-style project for **practicing Product Management mock interv
 - Question bank format and coverage: [`question-bank/README.md`](question-bank/README.md)
 - Web-only commands and troubleshooting: [`web/README.md`](web/README.md)
 
+## Deploying
+
+- **Railway**: supported; see [`web/README.md`](web/README.md) for repo-root vs `web/` root settings.
+- **Cloudflare Pages**: supported via `npm run build:cf` (Cloudflare edge runtime). The build bundles the YAML question bank into generated JSON; API routes don’t write local log files, so use `LOG_WEBHOOK_URL` for persistence.
+
 ## Security notes
 
 - This app is designed to be **public on the internet**; all requests are treated as untrusted.

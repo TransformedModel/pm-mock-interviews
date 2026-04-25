@@ -4,6 +4,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import type { CategoryKey, Difficulty } from "@/lib/types";
 import { CATEGORY_LABELS } from "@/lib/types";
 
+export const runtime = "edge";
+
 type SuggestRequest = {
   category: CategoryKey;
   difficulty: Difficulty;
